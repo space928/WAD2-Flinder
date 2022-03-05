@@ -35,9 +35,13 @@ ALLOWED_HOSTS = '.localhost, .127.0.0.1, .pythonanywhere.com'
 
 ## Building Bootstrap
 This project uses a customised version of Bootstrap for enhanced theming. This is done by 
-having a sass overrides file `TODO: overrides path` which contains all the Bootstrap customisations. 
-This Sass file has to be compiled into CSS which is served to the client using the `static` 
+having an SCSS overrides file `/flinder/scss/bootstrap-flinder.scss` which contains all the Bootstrap customisations. 
+This SCSS file has to be compiled into CSS which is served to the client using the `static/css` 
 directory.
 
 To recompile the Bootstrap CSS from the Sass customisations:  
-`TODO: Sass compilation instructions`
+ 1. Ensure Node and npm are installed on the local machine
+ 2. Install Node packages with:  
+    `npm install` From within the `flinder` directory (containing the `package.json` file)
+ 3. Compile the SCSS file using:  
+    `npm run css`
