@@ -27,6 +27,9 @@ class UserProfile(models.Model):
     )
     yearOfStudy = models.CharField(max_length=2,choices=YEAR_OF_STUDY_CHOICES)
 
+    class Meta:
+    	verbose_name_plural = 'User Profiles'
+
     def __str__(self):
         return self.name + " " + self.lastName + ", ID: " + self.userID
 
@@ -35,6 +38,9 @@ class Pictures(models.Model):
     poster = models.ForeignKey(User, on_delete=models.CASCADE)
     picture = models.ImageField()
     description = models.CharField(max_length=256)
+
+    class Meta:
+    	verbose_name_plural = 'Pictures'
 
     def __str__(self):
         return "PictureID: " + self.pictureID + ", posted by " + self.poster
@@ -46,6 +52,9 @@ class Preferences(models.Model):
     mixedYearOfStudy = models.BooleanField()
     mixedAge = models.BooleanField()
     maximumDistance = models.CharField(max_length=10)
+
+    class Meta:
+    	verbose_name_plural = 'Preferences'
 
     def __str__(self):
         return "Preferences posted by " + self.poster
@@ -61,6 +70,9 @@ class InterestsAndPriorities(models.Model):
     flatCleanliness = models.BooleanField()
     strictQuietHours = models.BooleanField()
 
+    class Meta:
+    	verbose_name_plural = 'Interests and Priorities'
+
     def __str__(self):
         return "Interests and priorites posted by " + self.poster
 
@@ -69,6 +81,9 @@ class Swipe(models.Model):
     swiper = models.ForeignKey(UserProfile, related_name = 'swiper', on_delete=models.CASCADE)
     swiped = models.ForeignKey(UserProfile, related_name = 'swiped', on_delete=models.CASCADE)
     swipeRight = models.BooleanField()
+
+    class Meta:
+    	verbose_name_plural = 'Swipe Actions'
 
     def __str__(self):
         return self.swiper + " swiped " + self.swiped + ". SwipeID: " + self.swipeID
