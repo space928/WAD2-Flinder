@@ -10,57 +10,49 @@ class User(models.Model):
 	password = models.CharField(widget=forms.PasswordInput)
 	flatSearcher = models.BooleanField()
 
-	MALE = 'm'
-	FEMALE = 'f'
-	PREFER_NOT_TO_SAY = 'pnts'
 	GENDER_CHOICES = (
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),
-        (PREFER_NOT_TO_SAY, 'Prefer not to say'),
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O','Other'),
+        ('PNTS', 'Prefer not to say'),
     )
 	gender = models.CharField(max_length=4,choices=GENDER_CHOICES)
 
-	FIRSTYEAR = '1'
-    SECONDYEAR = '2'
-    THIRDYEAR = '3'
-    FOURTHYEAR = '4'
-    FIFTHYEAR = '5'
-    POSTGRADUATE = 'pgt'
     YEAR_OF_STUDY_CHOICES = (
-        (FIRSTYEAR, '1st Year'),
-        (SECONDYEAR, '2nd Year'),
-        (THIRDYEAR, '3rd Year'),
-        (FOURTHYEAR, '4th Year'),
-        (FIFTHYEAR, '5th Year')
-        (POSTGRADUATE, 'Postgraduate'),
+        ('1', '1st Year'),
+        ('2', '2nd Year'),
+        ('3', '3rd Year'),
+        ('4', '4th Year'),
+        ('5', '5th Year'),
+        ('PGT', 'Postgraduate'),
     )
     yearOfStudy = models.CharField(max_length=2,choices=YEAR_OF_STUDY_CHOICES)
 
     def __str__(self):
-    	return self.userID
-
+    	return self.name + " " + self.lastName + ", ID: " + self.userID
 
 class Pictures(models.Model):
+	pictureID = models.AutoField(primary_key=True)
 	poster = models.ForeignKey(User, on_delete=models.CASCADE)
 	picture = models.ImageField()
-	description = models.CharField(ax_length=256)
+	description = models.CharField(max_length=256)
 
 	def __str__(self):
-		return self.poster
+		return "PictureID: " + self.pictureID + ", posted by " + self.poster
 
 
 class Preferences(models.Model):
-	poster = models.ForeignKey(User, on_delete=models.CASCADE)
+	poster = models.ForeignKey(User, primary_key = True, on_delete=models.CASCADE)
 	mixedGender = models.BooleanField()
 	mixedYearOfStudy = models.BooleanField()
-	moxedAge = models.BooleanField()
+	mixedAge = models.BooleanField()
 	maximumDistance = models.CharField(max_length=10)
 
 	def __str__(self):
-		return self.poster
+		return "Preferences posted by " + self.poster
 
 class InterestsAndPriorities(models.Model):
-	poster = models.ForeignKey(User, on_delete=models.CASCADE)
+	poster = models.ForeignKey(User, primary_key = True, on_delete=models.CASCADE)
 	pets = models.BooleanField()
 	food = models.BooleanField()
 	sports = models.BooleanField()
@@ -71,12 +63,13 @@ class InterestsAndPriorities(models.Model):
 	strictQuietHours = models.BooleanField()
 
 	def __str__(self):
-		return self.poster
+		return "Interests and priorites posted by " + self.poster
 
 class Swipe(models.Model):
+	swipeID = models.AutoField(primary_key = True)
 	swiper = models.ForeignKey(User, on_delete=models.CASCADE)
 	swiped = models.ForeignKey(User, on_delete=models.CASCADE)
 	swipeRight = models.BooleanField()
 
 	def __str__(self):
-		return self.swiper + " swiped " + self.swiped
+		return self.swiper + " swiped " + self.swiped + ". SwipeID: " + self.swipeID
