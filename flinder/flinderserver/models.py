@@ -36,11 +36,17 @@ class User(models.Model):
     )
     yearOfStudy = models.CharField(max_length=2,choices=YEAR_OF_STUDY_CHOICES)
 
+    def __str__(self):
+    	return self.userID
+
 
 class Pictures(models.Model):
 	poster = models.ForeignKey(User, on_delete=models.CASCADE)
 	picture = models.ImageField()
 	description = models.CharField(ax_length=256)
+
+	def __str__(self):
+		return self.poster
 
 
 class Preferences(models.Model):
@@ -49,6 +55,9 @@ class Preferences(models.Model):
 	mixedYearOfStudy = models.BooleanField()
 	moxedAge = models.BooleanField()
 	maximumDistance = models.CharField(max_length=10)
+
+	def __str__(self):
+		return self.poster
 
 class InterestsAndPriorities(models.Model):
 	poster = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -60,3 +69,14 @@ class InterestsAndPriorities(models.Model):
 	drinking = models.BooleanField()
 	flatCleanliness = models.BooleanField()
 	strictQuietHours = models.BooleanField()
+
+	def __str__(self):
+		return self.poster
+
+class Swipe(models.Model):
+	swiper = models.ForeignKey(User, on_delete=models.CASCADE)
+	swiped = models.ForeignKey(User, on_delete=models.CASCADE)
+	swipeRight = models.BooleanField()
+
+	def __str__(self):
+		return self.swiper + " swiped " + self.swiped
