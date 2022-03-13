@@ -10,7 +10,7 @@ Made by Team-3B for WAD2 at the University of Glasgow.
 ## Running
 To get a Flinder server up and running simply:
 1. Set up a python virtual environment with Python 3.9:  
-   `conda create -n flinder python==3.9`
+   `conda create -n flinder python==3.9`  
    `conda activate flinder`
 2. Install the pip dependencies:  
    `pip install -r .\flinder\requirements.txt`
@@ -28,7 +28,8 @@ Make sure the `.env` file is placed in the same directory as the `manage.py` fil
 # See: https://pypi.org/project/python-decouple/ for additional env documentation
 
 SECRET_KEY = 'CHOOSE A LONG (at least 50 chars) SECRET KEY IN PRODUCTION'
-DEBUG = True # Set to False in production
+# Set to False in production
+DEBUG = True
 # Add any domains you plan to host Flinder on here
 ALLOWED_HOSTS = '.localhost, .127.0.0.1, .pythonanywhere.com'
 ```

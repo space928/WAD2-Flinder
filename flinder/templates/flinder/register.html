@@ -5,6 +5,31 @@
     Register
 {% endblock %}
 
-{% block body_block %}
+<!-- This is used to center the content vertically -->
+{% block main_class %} my-auto {% endblock %}
 
+{% block bg_class %}
+    bg_dark
+{% endblock %}
+
+{% block body_block %}
+    <div class="my-5">
+        <div class="col-11 col-sm-5 col-lg-3 col-xxl-2 container">
+            <h1 class="my-5 text-center">Create your account</h1>
+            <form id="login_form" method="post" action="{% url 'flinder:register' %}">
+                {% csrf_token %}
+                <label class="my-1 row">
+                    <span class="float-start my-1">Username:</span><br/>
+                    <input type="text" name="username" value="" class="form-control"/>
+                </label>
+                <label class="my-1 row">
+                    <span class="float-start my-1">Password:</span><br/>
+                    <input type="password" name="password" value="" class="form-control"/>
+                </label>
+                <div class="row justify-content-center">
+                    <input class="btn btn-primary w-auto my-1" type="submit" value="Continue"/>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}

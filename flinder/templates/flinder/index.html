@@ -5,24 +5,27 @@
     Welcome
 {% endblock %}
 
+<!-- This is used to center the content vertically -->
+{% block main_class %} my-auto {% endblock %}
+
 {% block body_block %}
-    <div class="jumbotron text-center my-5">
-        <div class="container-fluid position-absolute top-50 translate-middle-y">
-            <h1 class="jumbotron-heading my-5">Login to Flinder</h1>
-            <p class="my-2">
+    <div class="text-center my-5">
+        <div class="container-fluid">
+            <h1 class="my-5">Login to Flinder</h1>
+            <div class="my-2 d-block">
                 <a class="btn btn-primary my-1" href="{%  url 'flinder:login'  %}">
                     Sign in
-                </a> <br/>
+                </a>
                 <a class="btn btn-outline-secondary my-1" href="#">
                     Sign in with Google
                 </a>
-            </p>
-            <p class="my-3">
+            </div>
+            <div class="my-3">
                 <span class="text-muted">New to flinder? Register here: </span><br/>
                 <a class="btn btn-outline-secondary my-2" href="{%  url 'flinder:register'  %}">
                     Register
                 </a>
-            <p/>
+            </div>
         </div>
     </div>
 {% endblock %}

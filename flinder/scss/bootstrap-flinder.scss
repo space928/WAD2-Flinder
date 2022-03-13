@@ -1,2 +1,80 @@
+//Bootstrap overrides for Flinder
+
+$variable-prefix:bs-;
+
+//Main colours
+$primary: #416AB5;
+$secondary:#f8f9fa;
+$success:#41AD4F;
+$danger:#dc3545;
+$info:#0dcaf0;
+$warning:#C4DEB2;
+$light:#f8f9fa;
+$dark:#0D5B5A;
+
+$enable-shadows:false;
+$enable-gradients:true;
+$border-width:1px;
+//$border-radius:1.5rem;
+//$border-radius-sm:.2rem;
+
+/*! Import Bootstrap 5 variables */
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+//Button overrides
+$btn-padding-x:$input-btn-padding-x * 3;
+$btn-padding-y:$input-btn-padding-y * 1.5;
+$btn-font-weight:300;
+$btn-border-radius:2rem;
+$btn-border-width:2px;
+
+//Typeface
+@import url(https://use.fontawesome.com/releases/v5.0.10/css/all.css);
+@import url(https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;450;700&display=swap);
+$font-family-base:Work Sans;
+$headings-font-family:Work Sans;
+
+$h1-font-size:$font-size-base * 3.5;
+$h2-font-size:$font-size-base * 2.5;
+$display-font-weight:450;
+$headings-font-weight:700;
+
+//Colour overrides
+$component-active-color:$dark;
+$gradient:linear-gradient(90deg, rgba($white, .0), rgba($dark, 0.5));
+$body-bg:$success;
+$body-color:$white;
+$link-color:$info;
+$text-muted:$gray-100;
+$mark-bg:$info;
+
+//Disable automatic font resizing
+$enable-rfs:false;
+
 // Import Bootstrap SCSS sources:
 @import "bootstrap/scss/bootstrap";
+
+/*.body::after {
+  content: "";
+  position: absolute;
+  background-image: url(/static/images/FlinderBGDeco.svg) bottom center;
+}*/
+
+//Add the curvy bottom to the navbar
+.navbar::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  height: 40px;
+  width: 100%;
+  background: url(/static/images/FlinderNavDeco.svg) bottom center;
+  background-size: 101%;
+};
+
+@include media-breakpoint-down(md) {
+  .navbar::after {
+    height: 15px;
+  }
+};

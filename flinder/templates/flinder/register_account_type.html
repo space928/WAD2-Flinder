@@ -1,0 +1,35 @@
+{% extends 'flinder/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Register Account Type
+{% endblock %}
+
+{% block nav_block %}
+
+{% endblock %}
+
+{% block header_block %}
+    <div class="container justify-content-between">
+        <h1 class="jumbotron-heading my-4 col-12 col-md-6">Create your account</h1>
+        <div class="col-12 col-md-8">Are you looking to find a room to stay in? Or are you looking for a flatmate to fill a room?</div>
+    </div>
+{% endblock %}
+
+<!-- This is used to center the content vertically -->
+{% block main_class %} my-auto {% endblock %}
+
+{% block bg_class %} bg-dark text-white {% endblock %}
+
+{% block body_block %}
+    <div class="text-center my-5">
+        <div class="my-2 d-block">
+            <a class="btn btn-primary my-1" href="{%  url 'flinder:register_room_seeker'  %}">
+                Looking for a room
+            </a>
+            <a class="btn btn-primary my-1" href="{%  url 'flinder:register_room_provider'  %}">
+                Looking to fill a room
+            </a>
+        </div>
+    </div>
+{% endblock %}
