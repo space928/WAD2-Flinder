@@ -5,6 +5,31 @@
     Register
 {% endblock %}
 
-{% block body_block %}
+<!-- This is used to center the content vertically -->
+{% block main_class %} my-auto {% endblock %}
 
+{% block bg_class %}
+    bg_dark
+{% endblock %}
+
+{% block body_block %}
+    <div class="jumbotron text-center my-5">
+        <div class="container-fluid position-absolute top-50 start-50 translate-middle">
+            <h1 class="jumbotron-heading my-5">Create your account</h1>
+            <form id="login_form" method="post" action="{% url 'flinder:login' %}">
+                {% csrf_token %}
+                <label class="my-1">
+                    <span class="float-start my-1">Username:</span><br/>
+                    <input type="text" name="username" value="" size="50"/>
+                </label>
+                <br />
+                <label class="my-1">
+                    <span class="float-start my-1">Password:</span><br/>
+                    <input type="password" name="password" value="" size="50"/>
+                </label>
+                <br />
+                <input class="btn btn-primary my-1" type="submit" value="Continue"/>
+            </form>
+        </div>
+    </div>
 {% endblock %}
