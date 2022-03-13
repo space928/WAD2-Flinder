@@ -2,13 +2,17 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    Register
+    Register Account Type
 {% endblock %}
 
 {% block nav_block %}
-    <div>
-        <h1 class="jumbotron-heading my-4">Create your account</h1>
-        <span class="">Are you looking to find a room to stay in? Or are you looking for a flatmate to fill a room?</span>
+
+{% endblock %}
+
+{% block header_block %}
+    <div class="container justify-content-between">
+        <h1 class="jumbotron-heading my-4 col-12 col-md-6">Create your account</h1>
+        <div class="col-12 col-md-8">Are you looking to find a room to stay in? Or are you looking for a flatmate to fill a room?</div>
     </div>
 {% endblock %}
 
@@ -19,22 +23,13 @@
 
 {% block body_block %}
     <div class="text-center my-5">
-        <div class="container-fluid position-absolute top-50 start-50 translate-middle">
-            <h5 class="jumbotron-heading my-3">Create your account</h5>
-            <form id="login_form" method="post" action="{% url 'flinder:login' %}">
-                {% csrf_token %}
-                <label class="my-1">
-                    <span class="float-start my-1">Username:</span><br/>
-                    <input type="text" name="username" value="" size="50"/>
-                </label>
-                <br />
-                <label class="my-1">
-                    <span class="float-start my-1">Password:</span><br/>
-                    <input type="password" name="password" value="" size="50"/>
-                </label>
-                <br />
-                <input class="btn btn-primary my-1" type="submit" value="Continue"/>
-            </form>
+        <div class="my-2 d-block">
+            <a class="btn btn-primary my-1" href="{%  url 'flinder:register_room_seeker'  %}">
+                Looking for a room
+            </a>
+            <a class="btn btn-primary my-1" href="{%  url 'flinder:register_room_provider'  %}">
+                Looking to fill a room
+            </a>
         </div>
     </div>
 {% endblock %}
