@@ -1,4 +1,5 @@
 //Bootstrap overrides for Flinder
+@use "sass:math";
 
 $variable-prefix:bs-;
 
@@ -60,6 +61,25 @@ $enable-rfs:false;
   position: absolute;
   background-image: url(/static/images/FlinderBGDeco.svg) bottom center;
 }*/
+
+@function calculateRem($size) {
+  //@return math.div($size, 16px) * 1rem;
+  @return ($size / 16px) * 1rem;
+}
+
+//Fix a few specifics with buttons
+.btn-outline-primary {
+  color: $white;
+}
+
+.btn-check:checked+.btn-outline-primary {
+  background-image: $gradient;
+}
+
+.btn-primary,.btn-check:checked+.btn-outline-primary {
+  border-width: 0;
+  padding: $btn-padding-y+calculateRem($btn-border-width) $btn-padding-x+calculateRem($btn-border-width);
+}
 
 //Add the curvy bottom to the navbar
 .navbar::after {

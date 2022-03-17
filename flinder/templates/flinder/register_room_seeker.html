@@ -5,10 +5,6 @@
     Register Looking For a Room
 {% endblock %}
 
-{% block nav_block %}
-
-{% endblock %}
-
 {% block header_block %}
     <div class="container justify-content-between">
         <h1 class="jumbotron-heading my-4 col-12 col-md-6">Create your account</h1>
@@ -18,14 +14,17 @@
 <!-- This is used to center the content vertically -->
 {% block main_class %} my-auto {% endblock %}
 
+<!-- This is used to set the body background -->
 {% block bg_class %} bg-dark text-white {% endblock %}
 
 {% block body_block %}
     <div class="my-5">
-        <div class="col-11 col-sm-5 col-lg-3 col-xxl-2 container">
-            <h2 class="my-3">Your details</h2>
-            <form id="login_form" method="post" action="{% url 'flinder:register_room_seeker' %}">
-                {% csrf_token %}
+        <form id="login_form" method="post" action="{% url 'flinder:register_room_seeker' %}">
+            {% csrf_token %}
+
+            <div class="col-11 col-sm-5 col-lg-3 col-xxl-2 container my-5">
+                <h2 class="my-3">Your details</h2>
+
                 <label class="my-1 row">
                     <span class="float-start my-1">Name:</span><br/>
                     <input type="text" name="name" value="" class="form-control"/>
@@ -42,63 +41,89 @@
                         <option value="3">3rd</option>
                         <option value="4">4th</option>
                         <option value="5">5th</option>
-                        <option value="pgr">Postgraduate</option>
+                        <option value="PGT">Postgraduate</option>
                     </select>
                 </label>
                 <label class="my-1 row">
                     <span class="float-start my-1">Gender:</span><br/>
                     <select class="form-select" name="gender">
-                        <option value="pnts" selected>Prefer not to say</option>
-                        <option value="m">Male</option>
-                        <option value="f">Female</option>
-                        <option value="o">Other</option>
+                        <option value="PNTS" selected>Prefer not to say</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="O">Other</option>
                     </select>
                 </label>
                 <label class="my-1 row">
                     <span class="float-start my-1">University:</span><br/>
-                    <input type="date" name="university" value="" class="form-control"/>
+                    <input type="text" name="university" value="" class="form-control"/>
                 </label>
-                <input class="btn btn-primary my-1 row" type="submit" value="Login"/>
-            </form>
-        </div>
-        <div class="col-11 col-sm-5 col-lg-3 col-xxl-2 container">
-            <h2 class="my-3">Your details</h2>
-            <form id="login_form" method="post" action="{% url 'flinder:register_room_seeker' %}">
-                {% csrf_token %}
+            </div>
+
+            <div class="col-11 col-sm-5 col-lg-3 col-xxl-2 container my-5">
+                <h2 class="my-3">Your preferences</h2>
+
                 <label class="my-1 row">
-                    <span class="float-start my-1">Name:</span><br/>
-                    <input type="text" name="name" value="" class="form-control"/>
+                    <span class="float-start my-1">
+                        Gender:
+                    </span><br/>
+                    <div class="btn-group" role="group">
+                        <input type="radio" class="btn-check" value="mixed" name="gender_radio" id="gender_btnradio1" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="gender_btnradio1">
+                            Mixed
+                        </label>
+                        <input type="radio" class="btn-check" value="same" name="gender_radio" id="gender_btnradio2" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="gender_btnradio2">
+                            Same
+                        </label>
+                    </div>
                 </label>
                 <label class="my-1 row">
-                    <span class="float-start my-1">Birthday:</span><br/>
-                    <input type="date" name="birthday" value="" class="form-control"/>
+                    <span class="float-start my-1">
+                        Year of study:
+                    </span><br/>
+                    <div class="btn-group" role="group">
+                        <input type="radio" class="btn-check" value="mixed" name="year_radio" id="year_btnradio1" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="year_btnradio1">
+                            Mixed
+                        </label>
+                        <input type="radio" class="btn-check" value="same" name="year_radio" id="year_btnradio2" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="year_btnradio2">
+                            Same
+                        </label>
+                    </div>
                 </label>
                 <label class="my-1 row">
-                    <span class="float-start my-1">Year of study:</span><br/>
-                    <select class="form-select" name="year">
-                        <option value="1" selected>1st</option>
-                        <option value="2">2nd</option>
-                        <option value="3">3rd</option>
-                        <option value="4">4th</option>
-                        <option value="5">5th</option>
-                        <option value="pgr">Postgraduate</option>
+                    <span class="float-start my-1">
+                        Age:
+                    </span><br/>
+                    <div class="btn-group" role="group">
+                        <input type="radio" class="btn-check" value="mixed" name="age_radio" id="age_btnradio1" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="age_btnradio1">
+                            Mixed
+                        </label>
+                        <input type="radio" class="btn-check" value="same" name="age_radio" id="age_btnradio2" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="age_btnradio2">
+                            Same
+                        </label>
+                    </div>
+                </label>
+                <label class="my-1 row">
+                    <span class="float-start my-1">
+                        Interests:
+                    </span><br/>
+                    <select multiple class="form-select" name="interests">
+                        <option value="pets">Pets</option>
+                        <option value="food">Food</option>
+                        <option value="sports">Sports</option>
+                        <option value="music">Music</option>
+                        <option value="partying">Partying</option>
+                        <option value="drinking">Drinking</option>
+                        <option value="flat_cleanliness">Flat cleanliness</option>
+                        <option value="strict_quiet_hours">Strict quiet hours</option>
                     </select>
                 </label>
-                <label class="my-1 row">
-                    <span class="float-start my-1">Gender:</span><br/>
-                    <select class="form-select" name="gender">
-                        <option value="pnts" selected>Prefer not to say</option>
-                        <option value="m">Male</option>
-                        <option value="f">Female</option>
-                        <option value="o">Other</option>
-                    </select>
-                </label>
-                <label class="my-1 row">
-                    <span class="float-start my-1">University:</span><br/>
-                    <input type="date" name="university" value="" class="form-control"/>
-                </label>
-                <input class="btn btn-primary my-1 row" type="submit" value="Login"/>
-            </form>
-        </div>
+                <input class="btn btn-primary my-3 row" type="submit" value="Continue"/>
+            </div>
+        </form>
     </div>
 {% endblock %}
