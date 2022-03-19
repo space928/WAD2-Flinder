@@ -2,17 +2,23 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+    emailAddress = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
-    lastName = models.CharField(max_length=128)
-    emailAddress = models.EmailField(max_length=128, unique=True)
+    mixedYearOfBirth = models.BooleanField()
     dateOfBirth = models.DateField()
     flatSearcher = models.BooleanField()
+    addressLine1 = models.CharField(max_field=128)
+    addressLine2 = models.CharField(max_field=128)
+    postCode = models.CharField(max_field=7)
+    flatBedrooms = models.IntField()
+    freeBedrooms = models.IntField()
+    university = models.CharField(max_length=30)
 
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
         ('O','Other'),
+        ('MIX','Mixed') #for flat providers
         ('PNTS', 'Prefer not to say'),
     )
     gender = models.CharField(max_length=4,choices=GENDER_CHOICES)
@@ -24,6 +30,7 @@ class UserProfile(models.Model):
         ('4', '4th Year'),
         ('5', '5th Year'),
         ('PGT', 'Postgraduate'),
+        ('MIX','Mixed'), #for flat providers
     )
     yearOfStudy = models.CharField(max_length=2,choices=YEAR_OF_STUDY_CHOICES)
 
@@ -31,7 +38,8 @@ class UserProfile(models.Model):
     	verbose_name_plural = 'User Profiles'
 
     def __str__(self):
-        return self.name + " " + self.lastName + ", ID: " + self.userID
+
+        return self.name + ", Username: " + self.emailAddress + (" room seeker" if self.flatSearcher else " room provider")
 
 class Pictures(models.Model):
     pictureID = models.AutoField(primary_key=True)
@@ -51,7 +59,6 @@ class Preferences(models.Model):
     mixedGender = models.BooleanField()
     mixedYearOfStudy = models.BooleanField()
     mixedAge = models.BooleanField()
-    maximumDistance = models.CharField(max_length=10)
 
     class Meta:
     	verbose_name_plural = 'Preferences'
