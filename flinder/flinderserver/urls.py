@@ -11,5 +11,8 @@ urlpatterns = [
     path('register/account_type', views.register_account_type, name="register_account_type"),
     path('register/room_seeker', views.register_room_seeker, name="register_room_seeker"),
     path('register/room_provider', views.register_room_provider, name="register_room_provider"),
+    path('upload_photos', views.upload_photos, name="upload_photos"),
+    path('edit_profile', views.edit_profile, name="edit_profile"),
     path('main', views.main, name="main"),
+    path('profile/<slug:profile_slug>', views.profile, name="profile"),
 ]
