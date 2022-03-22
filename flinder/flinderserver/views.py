@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from flinderserver.models import UserProfile, Pictures, Preferences, InterestsAndPriorities, Swipe
 
 
 # Create your views here.
@@ -6,9 +7,7 @@ def index(request):
     # Query the database for any data needed to build the page
 
     # Context for the html template
-    context_dict = {
-
-    }
+    context_dict = {}
 
     # Render the web page
     response = render(request, "flinder/index.html", context=context_dict)
@@ -20,12 +19,14 @@ def login(request):
     # Query the database for any data needed to build the page
 
     # Context for the html template
-    context_dict = {
+    context_dict = {}
 
-    }
+    model = UserProfile
+    fields = ()
+    template_name = "flinder/login.html"
 
     # Render the web page
-    response = render(request, "flinder/login.html", context=context_dict)
+    response = render(request, template_name, context=context_dict)
 
     return response
 
