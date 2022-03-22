@@ -18,10 +18,44 @@
 {% block bg_class %} bg-dark text-white {% endblock %}
 
 {% block body_block %}
-    <div class="my-5 col-5">
+    <div class="container-fluid row">
+        <div class="my-5 mx-2 col-md">
+            <!--<input type="file" id="image-upload" class="form-control" onchange="updateImage(this);" style="display: none">-->
+            <div class="image-upload-box rounded" ondragover="return false;" ondrop="updateImage(event)" onclick="openFileBrowser()">
+                <div class="text-center h1 lh-100">+</div>
+            </div>
+        </div>
+        <div class="my-5 mx-2 col-md container-fluid flex-column">
+            <div class="row" id="image-preview-container">
 
+            </div>
+        </div>
     </div>
-    <div class="my-5 col-5">
+{% endblock %}
 
-    </div>
+{% block script_block %}
+    <script>
+        function updateImage(event) {
+            if (event.dataTransfer.items && event.dataTransfer.items[0]) {
+                event.preventDefault();
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const div = document.createElement("div");
+                    //const img = document.createElement("img");
+                    //img.setAttribute('src', e.target.result);
+                    //img.setAttribute("class", "w-100 image-upload-box rounded-pill");
+                    //div.appendChild(img);
+                    div.setAttribute("class", "col-12 col-md-6 col-s-4 image-preview m-2");
+                    div.setAttribute("style", "background-image: url(\"" + e.target.result + "\")");
+                    document.getElementById('image-preview-container').appendChild(div);
+                };
+                reader.readAsDataURL(event.dataTransfer.items[0].getAsFile());
+            }
+        }
+
+        function openFileBrowser() {
+            console.log("This will do something");
+        }
+    </script>
 {% endblock %}

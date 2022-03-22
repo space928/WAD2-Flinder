@@ -98,3 +98,23 @@ $enable-rfs:false;
     height: 15px;
   }
 };
+
+.image-upload-box {
+  outline: dashed 3px;
+  height: 0;
+  width:80%;
+  padding-bottom:80%;
+}
+
+.image-preview {
+  width: 15rem;
+  height: 15rem;
+  background-size: cover;
+}
+
+/*.image-upload-box:after {
+  content: "";
+  display: block;
+  padding-bottom: 80%;
+}*/
+
