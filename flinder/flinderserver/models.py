@@ -2,8 +2,28 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+class InterestsAndPriorities(models.Model):
+    INTERESTS_CHOICES = (
+        ('pets', 'pets'),
+        ('food', 'food'),
+        ('sports', 'sports'),
+        ('music', 'music'),
+        ('partying', 'partying'),
+        ('drinking', 'drinking'),
+        ('flatCleanliness', 'flatCleanliness'),
+		('strictQuietHours', 'strictQuietHours')
+    )
+    choice = models.CharField(max_length=20, unique=True)
+
+    class Meta:
+        verbose_name_plural = 'Interests and Priorities'
+
+    def __str__(self):
+        return self.choice
+
+
 class UserProfile(models.Model):
-    emailAddress = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+    username = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     mixedYearOfBirth = models.BooleanField()
     dateOfBirth = models.DateField()
@@ -14,6 +34,10 @@ class UserProfile(models.Model):
     flatBedrooms = models.IntegerField()
     freeBedrooms = models.IntegerField()
     university = models.CharField(max_length=30)
+    BOOL_CHOICES = ((True,'Mixed'),(False,'Same'))
+    mixedGender = models.BooleanField(choices=BOOL_CHOICES)
+    mixedYearOfStudy = models.BooleanField(choices=BOOL_CHOICES)
+    mixedAge = models.BooleanField(choices=BOOL_CHOICES)
 
     GENDER_CHOICES = (
         ('M', 'Male'),
@@ -34,12 +58,13 @@ class UserProfile(models.Model):
         ('MIX', 'Mixed'),  # for flat providers
     )
     yearOfStudy = models.CharField(max_length=2, choices=YEAR_OF_STUDY_CHOICES)
+    interests = models.ManyToManyField(InterestsAndPriorities)
 
     class Meta:
         verbose_name_plural = 'User Profiles'
 
     def __str__(self):
-        return self.name + ", Username: " + self.emailAddress + (
+        return self.name + ", Username: " + self.username + (
             " room seeker" if self.flatSearcher else " room provider")
 
 
@@ -54,37 +79,6 @@ class Pictures(models.Model):
 
     def __str__(self):
         return "PictureID: " + self.pictureID + ", posted by " + self.poster
-
-
-class Preferences(models.Model):
-    poster = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
-    mixedGender = models.BooleanField()
-    mixedYearOfStudy = models.BooleanField()
-    mixedAge = models.BooleanField()
-
-    class Meta:
-        verbose_name_plural = 'Preferences'
-
-    def __str__(self):
-        return "Preferences posted by " + self.poster
-
-
-class InterestsAndPriorities(models.Model):
-    poster = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
-    pets = models.BooleanField()
-    food = models.BooleanField()
-    sports = models.BooleanField()
-    music = models.BooleanField()
-    partying = models.BooleanField()
-    drinking = models.BooleanField()
-    flatCleanliness = models.BooleanField()
-    strictQuietHours = models.BooleanField()
-
-    class Meta:
-        verbose_name_plural = 'Interests and Priorities'
-
-    def __str__(self):
-        return "Interests and priorites posted by " + self.poster
 
 
 class Swipe(models.Model):

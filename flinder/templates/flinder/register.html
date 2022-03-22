@@ -1,6 +1,8 @@
 {% extends 'flinder/base.html' %}
 {% load staticfiles %}
 
+{% load crispy_forms_tags %}
+
 {% block title_block %}
     Register
 {% endblock %}
@@ -18,14 +20,7 @@
             <h1 class="my-5 text-center">Create your account</h1>
             <form id="login_form" method="post" action="{% url 'flinder:register' %}">
                 {% csrf_token %}
-                <label class="my-1 row">
-                    <span class="float-start my-1">Username:</span><br/>
-                    <input type="text" name="username" value="" class="form-control"/>
-                </label>
-                <label class="my-1 row">
-                    <span class="float-start my-1">Password:</span><br/>
-                    <input type="password" name="password" value="" class="form-control"/>
-                </label>
+                {{ user_form|crispy }}
                 <div class="row justify-content-center">
                     <input class="btn btn-primary w-auto my-1" type="submit" value="Continue"/>
                 </div>
