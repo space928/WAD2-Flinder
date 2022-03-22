@@ -5,7 +5,6 @@ from flinderserver.models import Swipe
 
 def get_match(request):
     id = request.GET.get('id')
-    print(id)
     result = Swipe.objects.filter(swiper_id=id)
     result_list = []
     for title in result:
