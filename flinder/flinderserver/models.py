@@ -3,7 +3,7 @@ from django.db import models
 
 
 class UserProfile(models.Model):
-    emailAddress = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+    username = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     mixedYearOfBirth = models.BooleanField()
     dateOfBirth = models.DateField()
@@ -39,7 +39,7 @@ class UserProfile(models.Model):
         verbose_name_plural = 'User Profiles'
 
     def __str__(self):
-        return self.name + ", Username: " + self.emailAddress + (
+        return self.name + ", Username: " + self.username + (
             " room seeker" if self.flatSearcher else " room provider")
 
 
