@@ -25,7 +25,6 @@ class InterestsAndPriorities(models.Model):
 class UserProfile(models.Model):
     username = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
-    mixedYearOfBirth = models.BooleanField()
     yearOfBirth = models.IntegerField()
     flatSearcher = models.BooleanField()
     addressLine1 = models.CharField(max_length=128)

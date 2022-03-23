@@ -1,6 +1,7 @@
 from django import forms
 from flinderserver.models import UserProfile, InterestsAndPriorities
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
 
 class UserForm(forms.ModelForm):
 	username = forms.CharField(label="Username:", required=False)
@@ -12,7 +13,8 @@ class UserForm(forms.ModelForm):
 
 class RoomSeekerForm(forms.ModelForm):
 	name = forms.CharField(label="Name:")
-	yearOfBirth = forms.IntegerField(label="Year of birth")
+	YEAR_OF_BIRTH_CHOICES = tuple([(i, str(i)) for i in range(1950, 2050)])
+	yearOfBirth = forms.ChoiceField(label="Year of birth:", choices=YEAR_OF_BIRTH_CHOICES)
 	yearOfStudy = forms.ChoiceField(label="Year of study:", choices=UserProfile.YEAR_OF_STUDY_CHOICES)
 	gender = forms.ChoiceField(label="Gender:", choices=UserProfile.GENDER_CHOICES)
 	university = forms.CharField(label="University:")
@@ -29,15 +31,16 @@ class RoomSeekerForm(forms.ModelForm):
 
 class RoomProviderForm(forms.ModelForm):
 	name = forms.CharField(label="Group name:")
-	yearOfBirth = forms.IntegerField(label="Year of birth:")
+	YEAR_OF_BIRTH_CHOICES = tuple([(-1, "Mixed")] + [(i, str(i)) for i in range(1950, 2050)])
+	yearOfBirth = forms.ChoiceField(label="Year of birth:", choices=YEAR_OF_BIRTH_CHOICES)
 	yearOfStudy = forms.ChoiceField(label="Year of study:", choices=UserProfile.YEAR_OF_STUDY_CHOICES)
 	gender = forms.ChoiceField(label="Gender:", choices=UserProfile.GENDER_CHOICES)
 	university = forms.CharField(label="University:")
 	addressLine1 = forms.CharField(label="Address line 1:")
-	addressLine2 = forms.CharField(label="Address line 2:")
+	addressLine2 = forms.CharField(label="Address line 2:", required=False)
 	postCode = forms.CharField(label="Post code:")
-	numberOfBedrooms = forms.IntegerField(label="Number of bedrooms:")
-	availableBedrooms = forms.IntegerField(label="Bedrooms available:")
+	numberOfBedrooms = forms.IntegerField(label="Number of bedrooms:", validators=[MinValueValidator(1)])
+	availableBedrooms = forms.IntegerField(label="Bedrooms available:", validators=[MinValueValidator(1)])
 
 	class Meta:
 		model = UserProfile

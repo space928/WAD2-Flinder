@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from flinderserver.forms import RoomSeekerForm
+from flinderserver.forms import RoomSeekerForm, RoomProviderForm
 from flinderserver.models import UserProfile, Pictures, InterestsAndPriorities, Swipe
 from flinderserver.forms import UserForm
 from django.contrib.auth.models import User
@@ -86,9 +86,18 @@ def register_room_seeker(request):
 def register_room_provider(request):
     # Query the database for any data needed to build the page
 
+    if request.method == 'POST':
+        room_provider_form = RoomProviderForm(request.POST)
+        if room_provider_form.is_valid():
+            room_provider = room_provider_form.save()
+        else:
+            print(room_provider_form.errors)
+    else:
+        room_provider_form = RoomProviderForm()
+
     # Context for the html template
     context_dict = {
-
+        'room_provider_form':room_provider_form
     }
 
     # Render the web page
