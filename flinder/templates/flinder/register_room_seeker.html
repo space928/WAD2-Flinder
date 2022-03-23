@@ -1,6 +1,8 @@
 {% extends 'flinder/base.html' %}
 {% load staticfiles %}
 
+{% load crispy_forms_tags %}
+
 {% block title_block %}
     Register Looking For a Room
 {% endblock %}
@@ -26,77 +28,7 @@
             <h2 class="my-3">Your details</h2>
             <form id="login_form" method="post" action="{% url 'flinder:register_room_seeker' %}">
                 {% csrf_token %}
-                <label class="my-1 row">
-                    <span class="float-start my-1">Name:</span><br/>
-                    <input type="text" name="name" value="" class="form-control"/>
-                </label>
-                <label class="my-1 row">
-                    <span class="float-start my-1">Birthday:</span><br/>
-                    <input type="date" name="birthday" value="" class="form-control"/>
-                </label>
-                <label class="my-1 row">
-                    <span class="float-start my-1">Year of study:</span><br/>
-                    <select class="form-select" name="year">
-                        <option value="1" selected>1st</option>
-                        <option value="2">2nd</option>
-                        <option value="3">3rd</option>
-                        <option value="4">4th</option>
-                        <option value="5">5th</option>
-                        <option value="pgr">Postgraduate</option>
-                    </select>
-                </label>
-                <label class="my-1 row">
-                    <span class="float-start my-1">Gender:</span><br/>
-                    <select class="form-select" name="gender">
-                        <option value="pnts" selected>Prefer not to say</option>
-                        <option value="m">Male</option>
-                        <option value="f">Female</option>
-                        <option value="o">Other</option>
-                    </select>
-                </label>
-                <label class="my-1 row">
-                    <span class="float-start my-1">University:</span><br/>
-                    <input type="date" name="university" value="" class="form-control"/>
-                </label>
-                <input class="btn btn-primary my-1 row" type="submit" value="Login"/>
-            </form>
-        </div>
-        <div class="col-11 col-sm-5 col-lg-3 col-xxl-2 container">
-            <h2 class="my-3">Your details</h2>
-            <form id="login_form" method="post" action="{% url 'flinder:register_room_seeker' %}">
-                {% csrf_token %}
-                <label class="my-1 row">
-                    <span class="float-start my-1">Name:</span><br/>
-                    <input type="text" name="name" value="" class="form-control"/>
-                </label>
-                <label class="my-1 row">
-                    <span class="float-start my-1">Birthday:</span><br/>
-                    <input type="date" name="birthday" value="" class="form-control"/>
-                </label>
-                <label class="my-1 row">
-                    <span class="float-start my-1">Year of study:</span><br/>
-                    <select class="form-select" name="year">
-                        <option value="1" selected>1st</option>
-                        <option value="2">2nd</option>
-                        <option value="3">3rd</option>
-                        <option value="4">4th</option>
-                        <option value="5">5th</option>
-                        <option value="pgr">Postgraduate</option>
-                    </select>
-                </label>
-                <label class="my-1 row">
-                    <span class="float-start my-1">Gender:</span><br/>
-                    <select class="form-select" name="gender">
-                        <option value="pnts" selected>Prefer not to say</option>
-                        <option value="m">Male</option>
-                        <option value="f">Female</option>
-                        <option value="o">Other</option>
-                    </select>
-                </label>
-                <label class="my-1 row">
-                    <span class="float-start my-1">University:</span><br/>
-                    <input type="date" name="university" value="" class="form-control"/>
-                </label>
+                {{ room_seeker_form|crispy }}
                 <input class="btn btn-primary my-1 row" type="submit" value="Login"/>
             </form>
         </div>
