@@ -23,15 +23,16 @@ class InterestsAndPriorities(models.Model):
 
 
 class UserProfile(models.Model):
+    #fields shared between flat seekers and flat providers are optional
     username = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     yearOfBirth = models.IntegerField()
     flatSearcher = models.BooleanField()
-    addressLine1 = models.CharField(max_length=128)
-    addressLine2 = models.CharField(max_length=128)
-    postCode = models.CharField(max_length=7)
-    flatBedrooms = models.IntegerField()
-    freeBedrooms = models.IntegerField()
+    addressLine1 = models.CharField(max_length=128, required=False)
+    addressLine2 = models.CharField(max_length=128, required=False)
+    postCode = models.CharField(max_length=7, required=False)
+    flatBedrooms = models.IntegerField(required=False)
+    freeBedrooms = models.IntegerField(required=False)
     university = models.CharField(max_length=30)
     BOOL_CHOICES = ((True,'Mixed'),(False,'Same'))
     mixedGender = models.BooleanField(choices=BOOL_CHOICES)
