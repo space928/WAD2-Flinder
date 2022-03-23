@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from flinderserver import views
+from flinderserver import api
 
 app_name = "flinder"
 
@@ -15,5 +16,6 @@ urlpatterns = [
     path('edit_profile', views.edit_profile, name="edit_profile"),
     path('main', views.main, name="main"),
     path('profile/<slug:profile_slug>', views.profile, name="profile"),
-    path('get_matches', views.get_matches, name="get_matches")
+    path('api/get_matches', views.get_matches, name="get_matches")
+    path('api/get_match', api.get_match, name="get_match")
 ]
