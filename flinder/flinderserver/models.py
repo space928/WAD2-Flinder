@@ -23,7 +23,7 @@ class InterestsAndPriorities(models.Model):
 
 
 class UserProfile(models.Model):
-    #fields shared between flat seekers and flat providers are optional
+    # Fields shared between flat seekers and flat providers are optional
     username = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     yearOfBirth = models.IntegerField()
