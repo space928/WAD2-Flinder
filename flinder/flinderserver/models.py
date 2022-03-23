@@ -28,16 +28,17 @@ class UserProfile(models.Model):
     name = models.CharField(max_length=128)
     yearOfBirth = models.IntegerField()
     flatSearcher = models.BooleanField()
-    addressLine1 = models.CharField(max_length=128, required=False)
-    addressLine2 = models.CharField(max_length=128, required=False)
-    postCode = models.CharField(max_length=7, required=False)
-    flatBedrooms = models.IntegerField(required=False)
-    freeBedrooms = models.IntegerField(required=False)
+    addressLine1 = models.CharField(max_length=128, null=True, blank=True)
+    addressLine2 = models.CharField(max_length=128, null=True, blank=True)
+    postCode = models.CharField(max_length=7, null=True, blank=True)
+    flatBedrooms = models.IntegerField(null=True, blank=True)
+    freeBedrooms = models.IntegerField(null=True, blank=True)
     university = models.CharField(max_length=30)
     BOOL_CHOICES = ((True,'Mixed'),(False,'Same'))
     mixedGender = models.BooleanField(choices=BOOL_CHOICES)
     mixedYearOfStudy = models.BooleanField(choices=BOOL_CHOICES)
     mixedAge = models.BooleanField(choices=BOOL_CHOICES)
+    contactDetails = models.CharField(max_length=128)
 
     GENDER_CHOICES = (
         ('M', 'Male'),

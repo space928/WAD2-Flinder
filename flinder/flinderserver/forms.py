@@ -18,6 +18,7 @@ class RoomSeekerForm(forms.ModelForm):
 	yearOfStudy = forms.ChoiceField(label="Year of study:", choices=UserProfile.YEAR_OF_STUDY_CHOICES)
 	gender = forms.ChoiceField(label="Gender:", choices=UserProfile.GENDER_CHOICES)
 	university = forms.CharField(label="University:")
+	contactDetails = forms.CharField(label='Contact details:')
 	genderPreference = forms.ChoiceField(label="Gender preference:", widget=forms.RadioSelect, choices=UserProfile.BOOL_CHOICES)
 	yearOfStudyPreference = forms.ChoiceField(label="Year of study preference:", widget=forms.RadioSelect, choices=UserProfile.BOOL_CHOICES)
 	agePreference = forms.ChoiceField(label="Age preference:", widget=forms.RadioSelect, choices=UserProfile.BOOL_CHOICES)
@@ -39,6 +40,7 @@ class RoomProviderForm(forms.ModelForm):
 	addressLine1 = forms.CharField(label="Address line 1:")
 	addressLine2 = forms.CharField(label="Address line 2:", required=False)
 	postCode = forms.CharField(label="Post code:")
+	contactDetails = forms.CharField(label='Contact details:')
 	numberOfBedrooms = forms.IntegerField(label="Number of bedrooms:", validators=[MinValueValidator(1)])
 	availableBedrooms = forms.IntegerField(label="Bedrooms available:", validators=[MinValueValidator(1)])
 
