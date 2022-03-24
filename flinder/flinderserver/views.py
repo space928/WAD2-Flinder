@@ -1,15 +1,12 @@
-import django.http
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseNotAllowed, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm
 from flinderserver.models import UserProfile, Pictures, InterestsAndPriorities, Swipe
-
-# Temp
-import urllib.request
-import json
 
 
 # Create your views here.
@@ -25,7 +22,7 @@ def index(request):
     return response
 
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -185,17 +182,3 @@ def profile(request, profile_slug):
     response = render(request, "flinder/profile.html", context=context_dict)
 
     return response
-
-
-@login_required
-def get_matches(request):
-    # Check that this is an API call
-    if request.accepts('text/html'):
-        return HttpResponseNotAllowed(permitted_methods=["GET"])
-
-    # Get the user asking for matches
-    user = request.user
-    # TODO: Call the matching algorithm to get the data here
-    matches = json.loads(urllib.request.urlopen("https://api.mockaroo.com/api/7e1549e0?count=10&key=6bc6a940"))
-
-    return JsonResponse(matches)

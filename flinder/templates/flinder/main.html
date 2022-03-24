@@ -35,8 +35,8 @@
 {% block script_block %}
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
-        const apiURL = "{% url 'flinder:get_matches' %}"
-        let matches = [];
+        const apiURLCards = "{% url 'flinder:get_cards' %}"
+        let cardsJson = [];
         const swiper = new Swiper(".match-swiper", {
             grabCursor: true,
             preloadImages: false,
@@ -59,10 +59,10 @@
             }
         });
 
-        loadMore = ()=>{
-            fetch(apiURL).then((d)=>{
+        loadMoreCards = ()=>{
+            fetch(apiURLCards).then((d)=>{
                 d.json().then((data)=>{
-                    matches.push(...data);
+                    cardsJson.push(...data);
                 });
         })};
     </script>

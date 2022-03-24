@@ -11,7 +11,7 @@ class InterestsAndPriorities(models.Model):
         ('partying', 'partying'),
         ('drinking', 'drinking'),
         ('flatCleanliness', 'flatCleanliness'),
-		('strictQuietHours', 'strictQuietHours')
+        ('strictQuietHours', 'strictQuietHours')
     )
     choice = models.CharField(max_length=20, unique=True)
 
@@ -34,7 +34,7 @@ class UserProfile(models.Model):
     flatBedrooms = models.IntegerField(null=True, blank=True)
     freeBedrooms = models.IntegerField(null=True, blank=True)
     university = models.CharField(max_length=30)
-    BOOL_CHOICES = ((True,'Mixed'),(False,'Same'))
+    BOOL_CHOICES = ((True, 'Mixed'), (False, 'Same'))
     mixedGender = models.BooleanField(choices=BOOL_CHOICES)
     mixedYearOfStudy = models.BooleanField(choices=BOOL_CHOICES)
     mixedAge = models.BooleanField(choices=BOOL_CHOICES)
