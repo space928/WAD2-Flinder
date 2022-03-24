@@ -1,11 +1,11 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.urls import reverse
 
-from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm
+from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm, UserProfileForm
 from flinderserver.models import UserProfile, Pictures, InterestsAndPriorities, Swipe
 
 
@@ -58,7 +58,25 @@ def register(request):
     else:
         user_form = UserForm()
 
-    return render(request,'flinder/register.html',context = {'user_form': user_form})
+    return render(request, 'flinder/register.html', context={'user_form': user_form})
+
+
+@login_required
+def edit_profiles(request):
+    registered = False
+    # This should get from profiles:  request.user
+    user_profile = UserProfile.objects.get(pk=1)
+    print(user_profile)
+    if request.method == 'POST':
+        user_form = UserProfileForm(request.POST)
+        if user_form.is_valid():
+            user = user_form.save()
+            return redirect(reverse('flinder:register_account_type'))
+        else:
+            print(user_form.errors)
+    else:
+        user_form = UserProfileForm(request.POST, instance=user_profile)
+    return render(request, 'flinder/edit_profile.html', context={'user_form': user_form})
 
 
 @login_required
@@ -80,7 +98,7 @@ def register_room_seeker(request):
 
     # Context for the html template
     context_dict = {
-        'room_seeker_form':room_seeker_form
+        'room_seeker_form': room_seeker_form
     }
 
     # Render the web page
@@ -104,7 +122,7 @@ def register_room_provider(request):
 
     # Context for the html template
     context_dict = {
-        'room_provider_form':room_provider_form
+        'room_provider_form': room_provider_form
     }
 
     # Render the web page
@@ -128,7 +146,7 @@ def upload_photos(request):
     return response
 
 
-@login_required
+# @login_required
 def edit_profile(request):
     # Query the database for any data needed to build the page
 
