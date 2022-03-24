@@ -15,7 +15,7 @@
 {% block body_block %}
     <div class="container grid">
         <div class="col">
-            <h1>
+            <h1 class="my-5">
                 Your Matches
             </h1>
             <div id="matches-container" class="container">
@@ -77,32 +77,35 @@
         })};
 
         appendMatchesToDom = ()=>{
-            var matchesRoot = document.getElementById("matches-container");
-            for(var i = 0; i < matches.length; i++){
+            const matchesRoot = document.getElementById("matches-container");
+            for(let i = 0; i < matches.length; i++){
                 const container = document.createElement("div");
                 const textContainer = document.createElement("div");
+                const imageContainer = document.createElement("div");
                 const title = document.createElement("h3");
                 const subtitle = document.createElement("p");
                 const image = document.createElement("img");
+                const link = document.createElement("a");
 
-                container.appendChild(image);
+                container.appendChild(imageContainer);
                 container.appendChild(textContainer);
+                imageContainer.appendChild(image);
                 textContainer.appendChild(title);
                 textContainer.appendChild(subtitle);
+                textContainer.appendChild(link);
 
                 title.innerHTML = matches[i].name;
                 subtitle.innerHTML = matches[i].subtitle;
                 image.src = matches[i].photo;
+                link.href = matches[i].url;
 
-                container.className = "row";
+                container.className = "row align-items-center position-relative my-2";
                 textContainer.className = "col";
-                image.className = "col";
-                image.style.height = "50px";
-                image.style.width = "50px";
+                imageContainer.className = "image-thumbnail p-0 mx-3";
+                image.className = "rounded-circle";
                 title.className = "row";
                 subtitle.className = "row";
-
-
+                link.className = "stretched-link";
 
                 matchesRoot.appendChild(container);
             }
