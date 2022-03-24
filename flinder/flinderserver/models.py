@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+import uuid
 
 
 class InterestsAndPriorities(models.Model):
@@ -25,6 +26,7 @@ class InterestsAndPriorities(models.Model):
 class UserProfile(models.Model):
     # Fields shared between flat seekers and flat providers are optional
     username = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=128)
     yearOfBirth = models.IntegerField()
     flatSearcher = models.BooleanField()
@@ -63,6 +65,10 @@ class UserProfile(models.Model):
 
     class Meta:
         verbose_name_plural = 'User Profiles'
+        indexes = [
+            models.Index(fields=['username', ]),
+            models.Index(fields=['uuid', ]),
+        ]
 
     def __str__(self):
         return self.name + ", Username: " + self.username + (

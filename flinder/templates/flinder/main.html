@@ -6,7 +6,12 @@
 {% endblock %}
 
 {% block nav_block %}
-    <!-- TODO: Add button to profile edit page -->
+    <div class="container d-flex justify-content-between">
+
+    </div>
+    <a class="btn-outline-secondary btn px-3 py-2 m-auto float-right" href="{% url "flinder:edit_profile" %}">
+        <i class="fa-solid fa-user"></i>
+    </a>
 {% endblock %}
 
 <!-- This is used to center the content vertically -->
@@ -60,8 +65,8 @@
         });
 
         loadMoreCards = ()=>{
-            fetch(apiURLCards).then((d)=>{
-                d.json().then((data)=>{
+            return fetch(apiURLCards).then((d)=>{
+                return d.json().then((data)=>{
                     cardsJson.push(...data);
                 });
         })};

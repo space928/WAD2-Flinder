@@ -13,7 +13,7 @@ import ssl
 # result example:
 # [
 #     {
-#         "user":"hello@example.com",
+#         "user":"7ab778e7bc8eb0103",
 #         "photo":"media/images/example.png",
 #         "name":"Southpark House",
 #         "subtitle":"Flat of 3 on Dumbarton Road"
@@ -44,6 +44,7 @@ def get_matches(request):
     r = urllib.request.urlopen("https://api.mockaroo.com/api/7e1549e0?count=10&key=6bc6a940", context=gcontext)
     result_list = json.loads(r.read().decode(r.info().get_param('charset') or 'utf-8'))
 
+    # Set safe to False because we want to return a list of results and not a single object
     return JsonResponse(result_list, safe=False)
 
 
@@ -56,6 +57,9 @@ def get_cards(request):
     # Get the user asking for matches
     user = request.user
     # TODO: Call the matching algorithm to get the data here
-    matches = json.loads(urllib.request.urlopen("https://api.mockaroo.com/api/7e1549e0?count=10&key=6bc6a940"))
+    gcontext = ssl.SSLContext()  # Dodgy SSL context with no verification
+    r = urllib.request.urlopen("https://api.mockaroo.com/api/7e1549e0?count=10&key=6bc6a940", context=gcontext)
+    result_list = json.loads(r.read().decode(r.info().get_param('charset') or 'utf-8'))
 
-    return JsonResponse(matches)
+    # Set safe to False because we want to return a list of results and not a single object
+    return JsonResponse(result_list, safe=False)
