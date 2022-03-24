@@ -146,21 +146,6 @@ def upload_photos(request):
     return response
 
 
-# @login_required
-def edit_profile(request):
-    # Query the database for any data needed to build the page
-
-    # Context for the html template
-    context_dict = {
-
-    }
-
-    # Render the web page
-    response = render(request, "flinder/edit_profile.html", context=context_dict)
-
-    return response
-
-
 @login_required
 def main(request):
     # Query the database for any data needed to build the page
