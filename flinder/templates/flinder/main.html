@@ -66,4 +66,28 @@
                 });
         })};
     </script>
+    <script>
+        const apiURLMatches = "{% url 'flinder:get_matches' %}";
+        let matches = [];
+        loadMoreMatches = ()=>{
+            return fetch(apiURLMatches).then((d)=>{
+                d.json().then((data)=>{
+                    matches.push(...data);
+                });
+        })};
+
+        appendMatchesToDom = ()=>{
+            var matchesRoot = document.getElementById("matches-container");
+            for(var i = 0; i < matches.length; i++){
+                const container = document.createElement("div");
+                const h3 = document.createElement("h3");
+                container.appendChild(h3);
+                h5.innerHTML = matches[i].name;
+                matchesRoot.appendChild(container);
+            }
+        }
+
+        loadMoreMatches().then(appendMatchesToDom);
+
+    </script>
 {% endblock %}

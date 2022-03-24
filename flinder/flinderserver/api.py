@@ -21,10 +21,6 @@ import json
 
 @login_required
 def get_matches(request):
-    # Check that this is an API call
-    if request.accepts('text/html'):
-        return HttpResponseNotAllowed(permitted_methods=["GET"])
-
     """ TODO: Uncomment, once backend is complete
     result = Swipe.objects.filter(swiper_id=request.user.username)
     result_list = []
