@@ -71,7 +71,7 @@
         let matches = [];
         loadMoreMatches = ()=>{
             return fetch(apiURLMatches).then((d)=>{
-                d.json().then((data)=>{
+                return d.json().then((data)=>{
                     matches.push(...data);
                 });
         })};
