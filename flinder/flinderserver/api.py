@@ -6,6 +6,7 @@ from flinderserver.models import Swipe, UserProfile, Pictures
 # Temp
 import urllib.request
 import json
+import ssl
 
 
 # api/get_match?id=1
@@ -22,8 +23,8 @@ import json
 @login_required
 def get_matches(request):
     # Check that this is an API call
-    if request.accepts('text/html'):
-        return HttpResponseNotAllowed(permitted_methods=["GET"])
+    #if request.accepts('text/html'):
+    #    return HttpResponseNotAllowed(permitted_methods=["GET"])
 
     """ TODO: Uncomment, once backend is complete
     result = Swipe.objects.filter(swiper_id=request.user.username)
@@ -39,7 +40,9 @@ def get_matches(request):
         result_list.append(member)"""
 
     # TODO: Remove once backend work is complete
-    result_list = json.loads(urllib.request.urlopen("https://api.mockaroo.com/api/7e1549e0?count=10&key=6bc6a940"))
+    gcontext = ssl.SSLContext()  # Dodgy SSL context with no verification
+    r = urllib.request.urlopen("https://api.mockaroo.com/api/7e1549e0?count=10&key=6bc6a940", context=gcontext)
+    result_list = json.loads(r.read().decode(r.info().get_param('charset') or 'utf-8'))
 
     return JsonResponse(result_list, safe=False)
 
