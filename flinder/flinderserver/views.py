@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm
+from flinderserver.models import UserProfile
 
 
 # Create your views here.
