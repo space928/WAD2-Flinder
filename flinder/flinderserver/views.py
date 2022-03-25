@@ -5,7 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm
+from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm, UserProfileForm
+from flinderserver.models import UserProfile, Pictures, InterestsAndPriorities, Swipe
 
 
 # Create your views here.
@@ -42,6 +43,7 @@ def login_view(request):
 
 
 def register(request):
+    registered = False
     if request.method == 'POST':
         user_form = UserForm(request.POST)
 
@@ -49,6 +51,7 @@ def register(request):
             user = user_form.save()
             user.set_password(user.password)
             user.save()
+            registered = True
             return redirect(reverse('flinder:register_account_type'))
         else:
             print(user_form.errors)
@@ -87,13 +90,7 @@ def register_room_seeker(request):
     if request.method == 'POST':
         room_seeker_form = RoomSeekerForm(request.POST)
         if room_seeker_form.is_valid():
-            # Save the form making sure to populate the flatSearcher and username fields
-            room_seeker = room_seeker_form.save(commit=False)
-            room_seeker.username = request.user
-            room_seeker.flatSearcher = True
-            room_seeker.save()
-
-            return redirect(reverse('flinder:upload_photos'))
+            room_seeker = room_seeker_form.save()
         else:
             print(room_seeker_form.errors)
     else:
@@ -117,13 +114,7 @@ def register_room_provider(request):
     if request.method == 'POST':
         room_provider_form = RoomProviderForm(request.POST)
         if room_provider_form.is_valid():
-            # Save the form making sure to populate the flatSearcher and username fields
-            room_provider = room_provider_form.save(commit=False)
-            room_provider.username = request.user
-            room_provider.flatSearcher = False
-            room_provider.save()
-
-            return redirect(reverse('flinder:upload_photos'))
+            room_provider = room_provider_form.save()
         else:
             print(room_provider_form.errors)
     else:
@@ -142,16 +133,30 @@ def register_room_provider(request):
 
 @login_required
 def upload_photos(request):
+    # Query the database for any data needed to build the page
+
+    # Context for the html template
+    context_dict = {
+
+    }
+
     # Render the web page
-    response = render(request, "flinder/upload_photos.html")
+    response = render(request, "flinder/upload_photos.html", context=context_dict)
 
     return response
 
 
 @login_required
 def main(request):
+    # Query the database for any data needed to build the page
+
+    # Context for the html template
+    context_dict = {
+
+    }
+
     # Render the web page
-    response = render(request, "flinder/main.html")
+    response = render(request, "flinder/main.html", context=context_dict)
 
     return response
 

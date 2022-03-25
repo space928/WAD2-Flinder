@@ -6,12 +6,7 @@
 {% endblock %}
 
 {% block nav_block %}
-    <div class="container d-flex justify-content-between">
-
-    </div>
-    <a class="btn-outline-secondary btn px-3 py-2 m-auto float-right" href="{% url "flinder:edit_profile" %}">
-        <i class="fa-solid fa-user"></i>
-    </a>
+    <!-- TODO: Add button to profile edit page -->
 {% endblock %}
 
 <!-- This is used to center the content vertically -->
@@ -20,11 +15,11 @@
 {% block body_block %}
     <div class="container grid">
         <div class="col">
-            <h1 class="my-5">
+            <h1>
                 Your Matches
             </h1>
-            <div id="matches-container" class="container">
-            
+            <div id="matches-container">
+
             </div>
         </div>
         <div class="col">
@@ -65,59 +60,10 @@
         });
 
         loadMoreCards = ()=>{
-            return fetch(apiURLCards).then((d)=>{
-                return d.json().then((data)=>{
+            fetch(apiURLCards).then((d)=>{
+                d.json().then((data)=>{
                     cardsJson.push(...data);
                 });
         })};
-    </script>
-    <script>
-        const apiURLMatches = "{% url 'flinder:get_matches' %}";
-        let matches = [];
-        loadMoreMatches = ()=>{
-            return fetch(apiURLMatches).then((d)=>{
-                return d.json().then((data)=>{
-                    matches.push(...data);
-                });
-        })};
-
-        appendMatchesToDom = ()=>{
-            const matchesRoot = document.getElementById("matches-container");
-            for(let i = 0; i < matches.length; i++){
-                const container = document.createElement("div");
-                const textContainer = document.createElement("div");
-                const imageContainer = document.createElement("div");
-                const title = document.createElement("h3");
-                const subtitle = document.createElement("p");
-                const image = document.createElement("img");
-                const link = document.createElement("a");
-
-                container.appendChild(imageContainer);
-                container.appendChild(textContainer);
-                imageContainer.appendChild(image);
-                textContainer.appendChild(title);
-                textContainer.appendChild(subtitle);
-                textContainer.appendChild(link);
-
-                title.innerHTML = matches[i].name;
-                subtitle.innerHTML = matches[i].subtitle;
-                image.src = matches[i].photo;
-                link.href = matches[i].url;
-
-                container.className = "row align-items-center position-relative my-2";
-                textContainer.className = "col";
-                imageContainer.className = "image-thumbnail p-0 mx-3";
-                image.className = "rounded-circle";
-                title.className = "row";
-                subtitle.className = "row";
-                link.className = "stretched-link";
-
-                matchesRoot.appendChild(container);
-            }
-        }
-
-        loadMoreMatches().then(appendMatchesToDom);
-
-
     </script>
 {% endblock %}

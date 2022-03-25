@@ -7,7 +7,7 @@
     "css-compile": "node-sass --include-path node_modules --output-style compressed --source-map true --source-map-contents true --precision 6 scss -o static/css/",
     "css-lint": "stylelint scss/",
     "css-prefix": "postcss --replace static/css/bootstrap-flinder.css --use autoprefixer --map",
-    "css-purge": "purgecss --keyframes --css static/css/bootstrap-flinder.css --content templates/flinder/*.html --output static/css/",
+    "css-purge": "purgecss --keyframes --css static/css/bootstrap-flinder.css --content index.html \"node_modules/bootstrap/js/dist/{util,modal}.js\" --output static/css/",
     "css": "npm-run-all css-compile css-prefix"
   },
   "author": "Team 3B",
