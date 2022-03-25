@@ -1,5 +1,5 @@
 from django import forms
-from flinderserver.models import UserProfile, InterestsAndPriorities
+from flinderserver.models import UserProfile
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 
@@ -23,12 +23,12 @@ class RoomSeekerForm(forms.ModelForm):
     contactDetails = forms.CharField(label='Contact details:', widget=forms.Textarea)
 
     mixedGender = forms.ChoiceField(label="Gender preference:", widget=forms.RadioSelect,
-                                         choices=UserProfile.BOOL_CHOICES)
+                                    choices=UserProfile.BOOL_CHOICES)
     mixedYearOfStudy = forms.ChoiceField(label="Year of study preference:", widget=forms.RadioSelect,
-                                              choices=UserProfile.BOOL_CHOICES)
+                                         choices=UserProfile.BOOL_CHOICES)
     mixedAge = forms.ChoiceField(label="Age preference:", widget=forms.RadioSelect,
-                                      choices=UserProfile.BOOL_CHOICES)
-    interests = forms.MultipleChoiceField(label="Interests:", choices=InterestsAndPriorities.INTERESTS_CHOICES)
+                                 choices=UserProfile.BOOL_CHOICES)
+    interests = forms.MultipleChoiceField(label="Interests:", choices=UserProfile.INTERESTS_CHOICES)
 
     class Meta:
         model = UserProfile
@@ -52,12 +52,12 @@ class RoomProviderForm(forms.ModelForm):
     availableBedrooms = forms.IntegerField(label="Bedrooms available:", validators=[MinValueValidator(1)])
 
     mixedGender = forms.ChoiceField(label="Gender preference:", widget=forms.RadioSelect,
-                                         choices=UserProfile.BOOL_CHOICES)
+                                    choices=UserProfile.BOOL_CHOICES)
     mixedYearOfStudy = forms.ChoiceField(label="Year of study preference:", widget=forms.RadioSelect,
-                                              choices=UserProfile.BOOL_CHOICES)
+                                         choices=UserProfile.BOOL_CHOICES)
     mixedAge = forms.ChoiceField(label="Age preference:", widget=forms.RadioSelect,
-                                      choices=UserProfile.BOOL_CHOICES)
-    interests = forms.MultipleChoiceField(label="Interests:", choices=InterestsAndPriorities.INTERESTS_CHOICES)
+                                 choices=UserProfile.BOOL_CHOICES)
+    interests = forms.MultipleChoiceField(label="Interests:", choices=UserProfile.INTERESTS_CHOICES)
 
     class Meta:
         model = UserProfile

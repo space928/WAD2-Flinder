@@ -2,11 +2,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.urls import reverse
 
 from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm
-from flinderserver.models import UserProfile, Pictures, InterestsAndPriorities, Swipe
 
 
 # Create your views here.
@@ -43,7 +41,6 @@ def login_view(request):
 
 
 def register(request):
-    registered = False
     if request.method == 'POST':
         user_form = UserForm(request.POST)
 
@@ -51,7 +48,6 @@ def register(request):
             user = user_form.save()
             user.set_password(user.password)
             user.save()
-            registered = True
             return redirect(reverse('flinder:register_account_type'))
         else:
             print(user_form.errors)
@@ -77,8 +73,8 @@ def register_room_seeker(request):
             room_seeker.username = request.user
             room_seeker.flatSearcher = True
             room_seeker.save()
-            # Saving with commit=False requires us to do this to  ensure the many-many field in the model is saved
-            room_seeker_form.save_m2m()
+
+            return redirect(reverse('flinder:upload_photos'))
         else:
             print(room_seeker_form.errors)
     else:
@@ -105,10 +101,10 @@ def register_room_provider(request):
             # Save the form making sure to populate the flatSearcher and username fields
             room_provider = room_provider_form.save(commit=False)
             room_provider.username = request.user
-            room_provider.flatSearcher = True
+            room_provider.flatSearcher = False
             room_provider.save()
-            # Saving with commit=False requires us to do this to  ensure the many-many field in the model is saved
-            room_provider_form.save_m2m()
+
+            return redirect(reverse('flinder:upload_photos'))
         else:
             print(room_provider_form.errors)
     else:
@@ -127,15 +123,8 @@ def register_room_provider(request):
 
 @login_required
 def upload_photos(request):
-    # Query the database for any data needed to build the page
-
-    # Context for the html template
-    context_dict = {
-
-    }
-
     # Render the web page
-    response = render(request, "flinder/upload_photos.html", context=context_dict)
+    response = render(request, "flinder/upload_photos.html")
 
     return response
 
@@ -157,15 +146,8 @@ def edit_profile(request):
 
 @login_required
 def main(request):
-    # Query the database for any data needed to build the page
-
-    # Context for the html template
-    context_dict = {
-
-    }
-
     # Render the web page
-    response = render(request, "flinder/main.html", context=context_dict)
+    response = render(request, "flinder/main.html")
 
     return response
 

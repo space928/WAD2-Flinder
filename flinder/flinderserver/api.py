@@ -1,12 +1,10 @@
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponseNotAllowed
-
-from flinderserver.models import Swipe, UserProfile, Pictures
-
 # Temp
-import urllib.request
 import json
 import ssl
+import urllib.request
+
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponseNotAllowed
 
 
 # api/get_match?id=1
