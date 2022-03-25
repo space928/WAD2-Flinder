@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -55,6 +56,24 @@ def register(request):
         user_form = UserForm()
 
     return render(request, 'flinder/register.html', context={'user_form': user_form})
+
+
+@login_required
+def edit_profiles(request):
+    registered = False
+    # This should get from profiles:  request.user
+    user_profile = UserProfile.objects.get(pk=1)
+    print(user_profile)
+    if request.method == 'POST':
+        user_form = UserProfileForm(request.POST)
+        if user_form.is_valid():
+            user = user_form.save()
+            return redirect(reverse('flinder:register_account_type'))
+        else:
+            print(user_form.errors)
+    else:
+        user_form = UserProfileForm(request.POST, instance=user_profile)
+    return render(request, 'flinder/edit_profile.html', context={'user_form': user_form})
 
 
 @login_required
@@ -125,21 +144,6 @@ def register_room_provider(request):
 def upload_photos(request):
     # Render the web page
     response = render(request, "flinder/upload_photos.html")
-
-    return response
-
-
-@login_required
-def edit_profile(request):
-    # Query the database for any data needed to build the page
-
-    # Context for the html template
-    context_dict = {
-
-    }
-
-    # Render the web page
-    response = render(request, "flinder/edit_profile.html", context=context_dict)
 
     return response
 

@@ -12,7 +12,7 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username', 'password')
 
-
+        
 class RoomSeekerForm(forms.ModelForm):
     name = forms.CharField(label="Name:")
     YEAR_OF_BIRTH_CHOICES = tuple([(i, str(i)) for i in range(1950, 2050)])
@@ -35,7 +35,7 @@ class RoomSeekerForm(forms.ModelForm):
         fields = ('name', 'yearOfBirth', 'yearOfStudy', 'gender', 'university',
                   'mixedGender', 'mixedYearOfStudy', 'mixedAge', 'interests')
 
-
+    
 class RoomProviderForm(forms.ModelForm):
     name = forms.CharField(label="Group name:")
     YEAR_OF_BIRTH_CHOICES = tuple([(-1, "Mixed")] + [(i, str(i)) for i in range(1950, 2050)])
