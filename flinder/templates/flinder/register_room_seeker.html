@@ -1,7 +1,7 @@
 {% extends 'flinder/base.html' %}
-{% load crispy_forms_filters %}
-{% load crispy_forms_tags %}
 {% load staticfiles %}
+
+{% load crispy_forms_tags %}
 
 {% block title_block %}
     Register Looking For a Room
@@ -26,7 +26,7 @@
             <form id="login_form" method="post" action="{% url 'flinder:register_room_seeker' %}">
                 {% csrf_token %}
                 {{ room_seeker_form|crispy }}
-                <input class="btn btn-primary my-1 row" type="submit" value="Register"/>
+                <input class="btn btn-primary my-1 row" type="submit" value="Login"/>
             </form>
         </div>
     </div>

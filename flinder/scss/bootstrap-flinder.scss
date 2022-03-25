@@ -7,7 +7,7 @@ $variable-prefix:bs-;
 $primary: #416AB5;
 $secondary:#f8f9fa;
 $success:#41AD4F;
-$danger:#ff4658;
+$danger:#dc3545;
 $info:#0dcaf0;
 $warning:#C4DEB2;
 $light:#f8f9fa;
@@ -31,6 +31,7 @@ $btn-border-radius:2rem;
 $btn-border-width:2px;
 
 //Typeface
+@import url(https://use.fontawesome.com/releases/v5.0.10/css/all.css);
 @import url(https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;450;700&display=swap);
 $font-family-base:Work Sans;
 $headings-font-family:Work Sans;
@@ -116,17 +117,4 @@ $enable-rfs:false;
   display: block;
   padding-bottom: 80%;
 }*/
-
-.image-thumbnail {
-  width: 8rem;
-  height: 8rem;
-  overflow: hidden;
-  padding: 0;
-}
-
-.image-thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 
