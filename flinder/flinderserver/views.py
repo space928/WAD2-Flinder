@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm
+from flinderserver.models import UserProfile, Pictures
 
 
 # Create your views here.
@@ -140,12 +141,19 @@ def register_room_provider(request):
     return response
 
 
-@login_required
+# @login_required
 def upload_photos(request):
-    # Render the web page
-    response = render(request, "flinder/upload_photos.html")
-
-    return response
+    # Query the database for any data needed to build the page
+    if request.method == 'GET':
+        imgs = Pictures.objects.get(pk=1)
+        return render(request, 'flinder/upload_photos.html', {'imgs': imgs})
+    elif request.method == 'POST':
+        print(request)
+        imgfiles = request.FILES.get('img')
+        img = Pictures(picture=imgfile, description=imgfile.name)
+        img.save()
+        response = render(request, "flinder/upload_photos.html", context={'imgs': ""})
+        return response
 
 
 @login_required
