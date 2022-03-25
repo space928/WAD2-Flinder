@@ -58,7 +58,7 @@ def register(request):
     else:
         user_form = UserForm()
 
-    return render(request,'flinder/register.html',context = {'user_form': user_form})
+    return render(request, 'flinder/register.html', context={'user_form': user_form})
 
 
 @login_required
@@ -72,7 +72,13 @@ def register_room_seeker(request):
     if request.method == 'POST':
         room_seeker_form = RoomSeekerForm(request.POST)
         if room_seeker_form.is_valid():
-            room_seeker = room_seeker_form.save()
+            # Save the form making sure to populate the flatSearcher and username fields
+            room_seeker = room_seeker_form.save(commit=False)
+            room_seeker.username = request.user
+            room_seeker.flatSearcher = True
+            room_seeker.save()
+            # Saving with commit=False requires us to do this to  ensure the many-many field in the model is saved
+            room_seeker_form.save_m2m()
         else:
             print(room_seeker_form.errors)
     else:
@@ -80,7 +86,7 @@ def register_room_seeker(request):
 
     # Context for the html template
     context_dict = {
-        'room_seeker_form':room_seeker_form
+        'room_seeker_form': room_seeker_form
     }
 
     # Render the web page
@@ -96,7 +102,13 @@ def register_room_provider(request):
     if request.method == 'POST':
         room_provider_form = RoomProviderForm(request.POST)
         if room_provider_form.is_valid():
-            room_provider = room_provider_form.save()
+            # Save the form making sure to populate the flatSearcher and username fields
+            room_provider = room_provider_form.save(commit=False)
+            room_provider.username = request.user
+            room_provider.flatSearcher = True
+            room_provider.save()
+            # Saving with commit=False requires us to do this to  ensure the many-many field in the model is saved
+            room_provider_form.save_m2m()
         else:
             print(room_provider_form.errors)
     else:
@@ -104,7 +116,7 @@ def register_room_provider(request):
 
     # Context for the html template
     context_dict = {
-        'room_provider_form':room_provider_form
+        'room_provider_form': room_provider_form
     }
 
     # Render the web page
