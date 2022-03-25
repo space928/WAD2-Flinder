@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm, UserProfileForm
-from flinderserver.models import UserProfile, Pictures, InterestsAndPriorities, Swipe
+from flinderserver.models import UserProfile, Pictures, Swipe
 
 
 # Create your views here.
@@ -133,15 +133,8 @@ def register_room_provider(request):
 
 @login_required
 def upload_photos(request):
-    # Query the database for any data needed to build the page
-
-    # Context for the html template
-    context_dict = {
-
-    }
-
     # Render the web page
-    response = render(request, "flinder/upload_photos.html", context=context_dict)
+    response = render(request, "flinder/upload_photos.html")
 
     return response
 
