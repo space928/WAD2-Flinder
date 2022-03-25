@@ -151,9 +151,13 @@ def upload_photos(request):
         print(request)
         imgfiles = request.FILES.get('img')
         # please add user for post id here
+        if imgfiles.content_type != "image/jpeg" and imgfiles.content_type != "image/png":
+            return render(request, "flinder/upload_photos.html",
+                          context={'msg': "Img type forbidden! Please upload an img"})
         img = Pictures(picture=imgfiles, description=imgfiles.name, poster_id=1)
         img.save()
-        response = render(request, "flinder/upload_photos.html", context={'msg': "Upload success!","imgs":img.picture.url})
+        response = render(request, "flinder/upload_photos.html",
+                          context={'msg': "Upload success!", "imgs": img.picture.url})
         return response
 
 
