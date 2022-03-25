@@ -1,0 +1,30 @@
+{% extends 'flinder/base.html' %}
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+
+{% block title_block %}
+    Register
+{% endblock %}
+
+<!-- This is used to center the content vertically -->
+{% block main_class %} my-auto {% endblock %}
+
+{% block bg_class %}
+    bg_dark
+{% endblock %}
+
+{% block body_block %}
+    <div class="my-5">
+        <div class="col-11 col-sm-5 col-lg-3 col-xxl-2 container">
+            <h1 class="my-5 text-center">Edit profile</h1>
+            <form id="login_form" method="post" action="{% url 'flinder:edit_profile' %}">
+                {% csrf_token %}
+                {{ user_form|crispy }}
+                <div class="row justify-content-center">
+                    <input class="btn btn-primary w-auto my-1" type="submit" value="Save"/>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

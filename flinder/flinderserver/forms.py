@@ -62,5 +62,29 @@ class RoomProviderForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('name', 'yearOfBirth', 'yearOfStudy', 'gender', 'university',
-                  'addressLine1', 'addressLine2', 'postCode', 'numberOfBedrooms', 'availableBedrooms',
-                  'mixedGender', 'mixedYearOfStudy', 'mixedAge', 'interests')
+                  'addressLine1', 'addressLine2', 'postCode', 'numberOfBedrooms', 'availableBedrooms')
+
+
+class UserProfileForm(forms.ModelForm):
+    name = forms.CharField(label="Group name:")
+    YEAR_OF_BIRTH_CHOICES = tuple([(-1, "Mixed")] + [(i, str(i)) for i in range(1950, 2050)])
+    yearOfBirth = forms.ChoiceField(label="Year of birth:", choices=YEAR_OF_BIRTH_CHOICES)
+    yearOfStudy = forms.ChoiceField(label="Year of study:", choices=UserProfile.YEAR_OF_STUDY_CHOICES)
+    gender = forms.ChoiceField(label="Gender:", choices=UserProfile.GENDER_CHOICES)
+    university = forms.CharField(label="University:")
+    addressLine1 = forms.CharField(label="Address line 1:")
+    addressLine2 = forms.CharField(label="Address line 2:", required=False)
+    postCode = forms.CharField(label="Post code:")
+    contactDetails = forms.CharField(label='Contact details:')
+    flatBedrooms = forms.IntegerField(label="Number of bedrooms:", validators=[MinValueValidator(1)])
+    freeBedrooms = forms.IntegerField(label="Bedrooms available:", validators=[MinValueValidator(1)])
+    flatSearcher = forms.BooleanField(label="Flat Searcher or not", required=True)
+    mixedGender = forms.BooleanField(label="Mixed Gender or not", required=True)
+    mixedYearOfStudy = forms.BooleanField(label="Mixed Year Of Study or not", required=True)
+    mixedAge = forms.BooleanField(label="Mixed Age or not", required=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ('name', 'yearOfBirth', 'yearOfStudy', 'gender', 'university',
+                  'addressLine1', 'addressLine2', 'postCode', 'flatBedrooms', 'freeBedrooms',
+                  "flatSearcher", "mixedGender", "mixedYearOfStudy", "mixedAge")
