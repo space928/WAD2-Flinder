@@ -1,10 +1,17 @@
 {% extends 'flinder/base.html' %}
-{% load staticfiles %}
-
+{% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
+{% load staticfiles %}
 
 {% block title_block %}
     Register
+{% endblock %}
+
+{% block nav_block %}
+    <div class="container d-flex justify-content-between"></div>
+    <a class="btn-outline-secondary btn px-3 py-2 m-auto float-right" href="{% url "flinder:upload_photos" %}">
+        <i class="fa-solid fa-images"></i>
+    </a>
 {% endblock %}
 
 <!-- This is used to center the content vertically -->

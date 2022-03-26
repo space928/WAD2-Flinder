@@ -37,6 +37,8 @@
 
 {% block script_block %}
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="static/js/swiper.js"></script>
     <script>
         const apiURLCards = "{% url 'flinder:get_cards' %}"
         let cardsJson = [];
