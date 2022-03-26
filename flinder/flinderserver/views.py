@@ -5,8 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm
-from flinderserver.models import UserProfile, Pictures
+from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm, UserProfileForm
+from flinderserver.models import UserProfile, Pictures, Swipe
 
 
 # Create your views here.
