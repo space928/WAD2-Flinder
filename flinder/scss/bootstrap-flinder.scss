@@ -115,12 +115,6 @@ $enable-rfs:false;
   background-position: center;
 }
 
-/*.image-upload-box:after {
-  content: "";
-  display: block;
-  padding-bottom: 80%;
-}*/
-
 .image-thumbnail {
   width: 8rem;
   height: 8rem;
@@ -134,3 +128,26 @@ $enable-rfs:false;
   object-fit: cover;
 }
 
+#matches-container {
+  overflow: scroll;
+  max-height: 80%;
+}
+
+.swiper {
+  overflow: hidden;
+  position: relative;
+  height: 80%;
+}
+
+.swiper-card {
+  position: absolute;
+  overflow: hidden;
+  width: 35vw;
+  height: 60vh;
+  top: 50%;
+  left: 50%;
+  background-position: center;
+  background-size: cover;
+  background-color: $dark;
+  transform: translateX(-50%) translateY(-50%) scale(0.95);
+}

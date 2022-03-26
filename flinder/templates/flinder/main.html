@@ -16,7 +16,7 @@
 {% block main_class %} my-auto {% endblock %}
 
 {% block body_block %}
-    <div class="container grid">
+    <div class="container-fluid row">
         <div class="col">
             <h1 class="my-5">
                 Your Matches
@@ -26,50 +26,56 @@
             </div>
         </div>
         <div class="col">
-            <div class="swiper match-swiper">
-                <div class="swiper-wrapper">
+            <div class="swiper d-flex align-content-center justify-content-center" id="swiper">
 
-                </div>
             </div>
         </div>
     </div>
 {% endblock %}
 
 {% block script_block %}
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-    <script src="static/js/swiper.js"></script>
+    <script src="/static/js/swiper.js"></script>
     <script>
         const apiURLCards = "{% url 'flinder:get_cards' %}"
-        let cardsJson = [];
-        const swiper = new Swiper(".match-swiper", {
-            grabCursor: true,
-            preloadImages: false,
-            lazy: true,
-            initialSlide: 0,
-            longSwipes: false,
-            loop:true,
-            effect: "creative",
-            creativeEffect: {
-                prev: {
-                    shadow: true,
-                    translate: ["-125%", 0, -800],
-                    rotate: [0, 0, -20]
-                },
-                next: {
-                    shadow: true,
-                    translate: ["125%", 0, -800],
-                    rotate: [0, 0, 20]
-                }
-            }
-        });
+
+        const swiperContainer = document.getElementById('swiper');
+        const swiper = new Swiper(swiperContainer, 100, 0.25, 45, 0.05);
 
         loadMoreCards = ()=>{
             return fetch(apiURLCards).then((d)=>{
                 return d.json().then((data)=>{
-                    cardsJson.push(...data);
+                    createCards(data);
                 });
         })};
+
+        createCards = (newCards)=>{
+            for(let card of newCards) {
+                const container = document.createElement("div");
+                const textContainer = document.createElement("div");
+                const title = document.createElement("h3");
+                const subtitle = document.createElement("p");
+
+                container.appendChild(textContainer);
+                textContainer.appendChild(title);
+                textContainer.appendChild(subtitle);
+
+                title.innerHTML = card.name;
+                subtitle.innerHTML = card.subtitle;
+                container.style.backgroundImage = `url(${card.photo})`;
+
+                container.className = "align-items-center my-2 rounded-3 swiper-card";
+                textContainer.className = "col";
+                title.className = "row";
+                subtitle.className = "row";
+
+                swiperContainer.appendChild(container);
+            }
+        };
+
+        loadMoreCards().then(()=>{
+            swiper.updateCards();
+        });
     </script>
     <script>
         const apiURLMatches = "{% url 'flinder:get_matches' %}";
@@ -117,7 +123,5 @@
         }
 
         loadMoreMatches().then(appendMatchesToDom);
-
-
     </script>
 {% endblock %}

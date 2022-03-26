@@ -48,10 +48,6 @@ def get_matches(request):
 
 @login_required
 def get_cards(request):
-    # Check that this is an API call
-    if request.accepts('text/html'):
-        return HttpResponseNotAllowed(permitted_methods=["GET"])
-
     # Get the user asking for matches
     user = request.user
     # TODO: Call the matching algorithm to get the data here
