@@ -21,9 +21,16 @@
     <div class="container-fluid row">
         <div class="my-5 mx-2 col-md">
             <!--<input type="file" id="image-upload" class="form-control" onchange="updateImage(this);" style="display: none">-->
-            <div class="image-upload-box rounded" ondragover="return false;" ondrop="updateImage(event)" onclick="openFileBrowser()">
-                <div class="text-center h1 lh-100">+</div>
-            </div>
+            {#            <div class="image-upload-box rounded" ondragover="return false;" ondrop="updateImage(event)" onclick="openFileBrowser()">#}
+            {#                <div class="text-center h1 lh-100">+</div>#}
+            {#            </div>#}
+            <form action="{% url 'flinder:upload_photos' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input name="img" type="file">
+                <button class="btn btn-primary w-auto my-1" type="submit">Upload</button>
+            </form>
+            <img style="width: 100%" src="{{ imgs }}"/>
+            <h1>{{ msg }}</h1>
         </div>
         <div class="my-5 mx-2 col-md container-fluid flex-column">
             <div class="row" id="image-preview-container">

@@ -141,12 +141,24 @@ def register_room_provider(request):
     return response
 
 
-@login_required
+# @login_required
 def upload_photos(request):
-    # Render the web page
-    response = render(request, "flinder/upload_photos.html")
-
-    return response
+    # Query the database for any data needed to build the page
+    if request.method == 'GET':
+        imgs = Pictures.objects.get(pk=1)
+        return render(request, 'flinder/upload_photos.html', {'imgs': imgs.picture.url})
+    elif request.method == 'POST':
+        print(request)
+        imgfiles = request.FILES.get('img')
+        # please add user for post id here
+        if imgfiles.content_type != "image/jpeg" and imgfiles.content_type != "image/png":
+            return render(request, "flinder/upload_photos.html",
+                          context={'msg': "Img type forbidden! Please upload an img"})
+        img = Pictures(picture=imgfiles, description=imgfiles.name, poster_id=1)
+        img.save()
+        response = render(request, "flinder/upload_photos.html",
+                          context={'msg': "Upload success!", "imgs": img.picture.url})
+        return response
 
 
 @login_required
