@@ -16,6 +16,7 @@ $dark:#0D5B5A;
 $enable-shadows:false;
 $enable-gradients:true;
 $border-width:1px;
+$border-radius-lg:1rem;
 //$border-radius:1.5rem;
 //$border-radius-sm:.2rem;
 
@@ -75,7 +76,7 @@ $enable-rfs:false;
   background-image: $gradient;
 }
 
-.btn-primary,.btn-check:checked+.btn-outline-primary {
+.btn-primary,.btn-danger,.btn-check:checked+.btn-outline-primary {
   border-width: 0;
   padding: $btn-padding-y+calculateRem($btn-border-width) $btn-padding-x+calculateRem($btn-border-width);
 }
@@ -103,12 +104,15 @@ $enable-rfs:false;
   height: 0;
   width:80%;
   padding-bottom:80%;
+  background: url(/static/images/PlusIcon.svg) no-repeat center;
+  background-size: 4rem;
 }
 
 .image-preview {
   width: 15rem;
   height: 15rem;
   background-size: cover;
+  background-position: center;
 }
 
 /*.image-upload-box:after {
