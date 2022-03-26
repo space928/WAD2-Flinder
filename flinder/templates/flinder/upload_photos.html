@@ -6,6 +6,13 @@
     Register Looking For a Room
 {% endblock %}
 
+{% block nav_block %}
+    <div class="container d-flex justify-content-between"></div>
+    <a class="btn-outline-secondary btn px-3 py-2 m-auto float-right" href="{% url "flinder:main" %}">
+        <i class="fa-solid fa-house"></i>
+    </a>
+{% endblock %}
+
 {% block header_block %}
     <div class="container justify-content-between">
         <h1 class="jumbotron-heading my-4 col-12 col-md-6">Upload photos</h1>
@@ -28,11 +35,11 @@
 
             </div>
         </div>
-        <form id="image-form" method="post" action="{% url 'flinder:upload_photos' %}">
+        <form id="image-form" method="post" action="{% url 'flinder:upload_photos' %}" enctype="multipart/form-data">
             {% csrf_token %}
-            <input class="image-input-empty hidden" type="image" alt=""/>
+            <input class="d-none image-input image0" id="image-input-empty" type="file" alt="" accept="image/jpeg,image/png" name="image0"/>
             <div class="row justify-content-center">
-                <input class="btn btn-primary w-auto my-1" type="submit" value="Continue"/>
+                <input class="btn btn-primary w-auto my-1" type="submit" value="Upload"/>
             </div>
         </form>
     </div>
@@ -40,36 +47,62 @@
 
 {% block script_block %}
     <script>
+        function addImage(image) {
+            const reader = new FileReader();
+            const imageForm = document.getElementById("image-form");
+
+            const inp = document.getElementById("image-input-empty");
+
+            reader.onload = function (e) {
+                const div = document.createElement("div");
+                div.setAttribute("class", "col-12 col-md-6 col-s-4 rounded-3 image-preview m-2");
+                div.setAttribute("style", "background-image: url(\"" + e.target.result + "\")");
+                div.innerHTML = `<a class='btn-danger btn px-3 py-2 my-2 m-auto float-right text-light' onclick='removeImage("${inp.name}")'>
+                                    <i class='fa-solid fa-xmark'></i>
+                                </a>`;
+                div.id = inp.name+"-preview";
+                document.getElementById('image-preview-container').appendChild(div);
+            };
+            reader.readAsDataURL(image);
+
+            const dt = new DataTransfer();
+            dt.items.add(image);
+            inp.files = dt.files;
+            inp.id = "";
+
+            const next = document.createElement("input");
+            const nextName = "image" + document.getElementsByClassName("image-input").length
+            next.type = "file";
+            next.alt = "";
+            next.id = "image-input-empty";
+            next.className = "d-none image-input " + nextName;
+            next.accept="image/jpeg,image/png";
+            next.name = nextName;
+            imageForm.appendChild(next);
+        }
+
         function updateImage(event) {
             if (event.dataTransfer.items) {
                 event.preventDefault();
-                const imageForm = document.getElementById("image-form");
                 for (let item of event.dataTransfer.items) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        const div = document.createElement("div");
-                        div.setAttribute("class", "col-12 col-md-6 col-s-4 rounded-3 image-preview m-2");
-                        div.setAttribute("style", "background-image: url(\"" + e.target.result + "\")");
-                        document.getElementById('image-preview-container').appendChild(div);
-                    };
-                    reader.readAsDataURL(item.getAsFile());
-
-                    const inp = document.getElementById("image-input-empty");
-                    inp.value = item;
-                    inp.className = "image-input-full hidden";
-
-                    const next = document.createElement("input");
-                    next.type = "image";
-                    next.alt = "";
-                    next.className = "image-input-empty hidden";
-                    imageForm.appendChild(next);
+                    addImage(item.getAsFile());
                 }
             }
         }
 
         function openFileBrowser() {
-            document.getElementById("image-input-empty").click();
+            const uploadInput = document.getElementById("image-input-empty");
+            uploadInput.onchange = (ev) => {
+                addImage(ev.target.files[0]);
+            };
+            uploadInput.click();
+        }
+
+        function removeImage(image) {
+            const img = document.getElementsByClassName(image)[0];
+            const imgPreview = document.getElementById(image+"-preview");
+            img.remove();
+            imgPreview.remove();
         }
     </script>
 {% endblock %}

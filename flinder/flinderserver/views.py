@@ -143,22 +143,26 @@ def register_room_provider(request):
 
 # @login_required
 def upload_photos(request):
-    # Query the database for any data needed to build the page
-    if request.method == 'GET':
-        imgs = Pictures.objects.get(pk=1)
-        return render(request, 'flinder/upload_photos.html', {'imgs': imgs.picture.url})
-    elif request.method == 'POST':
-        print(request)
-        imgfiles = request.FILES.get('img')
-        # please add user for post id here
-        if imgfiles.content_type != "image/jpeg" and imgfiles.content_type != "image/png":
-            return render(request, "flinder/upload_photos.html",
-                          context={'msg': "Img type forbidden! Please upload an img"})
-        img = Pictures(picture=imgfiles, description=imgfiles.name, poster_id=1)
-        img.save()
-        response = render(request, "flinder/upload_photos.html",
-                          context={'msg': "Upload success!", "imgs": img.picture.url})
-        return response
+    current_images = Pictures.objects.filter(poster=request.user)
+    context_dict = {'images': [img.picture.url for img in current_images]}
+
+    if request.method == 'POST':
+        # Check each image is of an appropriate type
+        for image in request.FILES.values():
+            if image.content_type != "image/jpeg" and image.content_type != "image/png":
+                context_dict['msg'] = "Img type forbidden! Please upload an img"
+                return render(request, "flinder/upload_photos.html", context=context_dict)
+
+        # Save each image to the DB
+        for image in request.FILES.values():
+            print(f"Uploading {image.name}...")
+            img = Pictures(picture=image, description=image.name, poster=request.user)
+            img.save()
+
+        context_dict['msg'] = "Upload success!"
+        return render(request, "flinder/upload_photos.html", context=context_dict)
+
+    return render(request, 'flinder/upload_photos.html', context=context_dict)
 
 
 @login_required

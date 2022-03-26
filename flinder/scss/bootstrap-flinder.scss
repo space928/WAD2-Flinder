@@ -76,7 +76,7 @@ $enable-rfs:false;
   background-image: $gradient;
 }
 
-.btn-primary,.btn-check:checked+.btn-outline-primary {
+.btn-primary,.btn-danger,.btn-check:checked+.btn-outline-primary {
   border-width: 0;
   padding: $btn-padding-y+calculateRem($btn-border-width) $btn-padding-x+calculateRem($btn-border-width);
 }

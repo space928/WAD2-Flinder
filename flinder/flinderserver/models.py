@@ -70,8 +70,8 @@ class UserProfile(models.Model):
 class Pictures(models.Model):
     pictureID = models.AutoField(primary_key=True)
     poster = models.ForeignKey(User, on_delete=models.CASCADE)
-    picture = models.ImageField()
-    description = models.CharField(max_length=256)
+    picture = models.ImageField(upload_to='profile_images', blank=True)
+    description = models.CharField(max_length=256, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'Pictures'
