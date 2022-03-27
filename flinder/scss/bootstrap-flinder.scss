@@ -180,11 +180,19 @@ $card-base-size-tall:90vh;
   background: $body-bg;
 }
 
+.bg-dark::-webkit-scrollbar-track {
+  background: $dark;
+}
+
 ::-webkit-scrollbar-thumb {
-  background: $warning;
+  background: rgba($warning,0.5);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: $white;
+  background: rgba($warning,1);
+}
+
+.overflow-scroll-y {
+  overflow: hidden auto;
 }
