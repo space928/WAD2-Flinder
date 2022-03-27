@@ -11,6 +11,8 @@ class Swiper {
         this.scaleChange = scaleChange;
         this.updateCards();
         this.onCardSwiped = null;
+        this.onHeld = null;
+        this.onRelease = null;
     }
 
     updateCards() {
@@ -79,6 +81,9 @@ class Swiper {
 
             this.isDraggingFrom =
                 (e.center.y - bounds.top) > this.topCard.clientHeight / 2 ? -1 : 1;
+
+            if(this.onHeld)
+                this.onHeld(this.topCard);
         }
 
         // Compute next position of card
@@ -92,7 +97,7 @@ class Swiper {
 
         // Set the new position
         this.topCard.style.transform =
-            `translateX(${posX}px) translateY(${posY}px) rotate(${rot}deg) rotateY(0deg) scale(1)`;
+            `translateX(${posX}px) translateY(${posY}px) rotate(${rot}deg) rotateY(${ratioX*this.maxRotation}deg) rotateX(${-ratioY*this.maxRotation}deg) scale(1)`;
         // Update the scale of the next card
         if(this.nextCard)
             this.nextCard.style.transform =
@@ -100,6 +105,8 @@ class Swiper {
 
         // Last frame of swiping
         if(e.isFinal) {
+            if(this.onRelease)
+                this.onRelease(this.topCard);
             this.isPanning = false;
             let successful = false;
 

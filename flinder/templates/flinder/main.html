@@ -6,8 +6,7 @@
 {% endblock %}
 
 {% block nav_block %}
-    <div class="container d-flex justify-content-between"></div>
-    <a class="btn-outline-secondary btn px-3 py-2 m-auto float-right" href="{% url "flinder:edit_profile" %}">
+    <a class="btn-outline-secondary btn px-3 py-2 me-2 ms-auto" href="{% url "flinder:edit_profile" %}">
         <i class="fa-solid fa-user"></i>
     </a>
 {% endblock %}
@@ -17,15 +16,15 @@
 
 {% block body_block %}
     <div class="container-fluid row">
-        <div class="col">
-            <h1 class="my-5">
+        <div class="col-md">
+            <h1 class="my-3">
                 Your Matches
             </h1>
             <div id="matches-container" class="container">
             
             </div>
         </div>
-        <div class="col">
+        <div class="col-md">
             <div class="swiper d-flex align-content-center justify-content-center" id="swiper">
 
             </div>
@@ -41,6 +40,12 @@
 
         const swiperContainer = document.getElementById('swiper');
         const swiper = new Swiper(swiperContainer, 100, 0.25, 45, 0.05);
+        swiper.onHeld = (card) => {
+            card.classList.add("swiper-card-held");
+        };
+        swiper.onRelease = (card) => {
+            card.classList.remove("swiper-card-held");
+        };
 
         loadMoreCards = ()=>{
             return fetch(apiURLCards).then((d)=>{
@@ -60,14 +65,14 @@
                 textContainer.appendChild(title);
                 textContainer.appendChild(subtitle);
 
+                container.className = "align-items-end d-flex my-2 rounded-3 swiper-card";
+                textContainer.className = "col ms-4";
+                title.className = "row";
+                subtitle.className = "row";
+
                 title.innerHTML = card.name;
                 subtitle.innerHTML = card.subtitle;
                 container.style.backgroundImage = `url(${card.photo})`;
-
-                container.className = "align-items-center my-2 rounded-3 swiper-card";
-                textContainer.className = "col";
-                title.className = "row";
-                subtitle.className = "row";
 
                 swiperContainer.appendChild(container);
             }

@@ -56,14 +56,7 @@ $enable-rfs:false;
 // Import Bootstrap SCSS sources:
 @import "bootstrap/scss/bootstrap";
 
-/*.body::after {
-  content: "";
-  position: absolute;
-  background-image: url(/static/images/FlinderBGDeco.svg) bottom center;
-}*/
-
 @function calculateRem($size) {
-  //@return math.div($size, 16px) * 1rem;
   @return ($size / 16px) * 1rem;
 }
 
@@ -80,6 +73,8 @@ $enable-rfs:false;
   border-width: 0;
   padding: $btn-padding-y+calculateRem($btn-border-width) $btn-padding-x+calculateRem($btn-border-width);
 }
+
+// ### Styling for custom elements
 
 //Add the curvy bottom to the navbar
 .navbar::after {
@@ -129,25 +124,67 @@ $enable-rfs:false;
 }
 
 #matches-container {
-  overflow: scroll;
-  max-height: 80%;
+  overflow: hidden scroll;
+  height: 75vh;
+  scroll-behavior: smooth;
 }
 
 .swiper {
   overflow: hidden;
   position: relative;
-  height: 80%;
+  height: 85vh;
 }
+
+$card-ratio:1.3;
+$card-base-size-wide:60vw;
+$card-base-size-tall:90vh;
 
 .swiper-card {
   position: absolute;
   overflow: hidden;
-  width: 35vw;
-  height: 60vh;
+  width: $card-base-size-wide/2;
+  height: $card-base-size-wide * $card-ratio/2;
+  max-height: $card-base-size-tall/2;
+  max-width: $card-base-size-tall * $card-ratio/2;
   top: 50%;
   left: 50%;
+  //background-image: linear-gradient(to bottom, rgba($dark, .0), rgba($dark, 0.3));
   background-position: center;
   background-size: cover;
   background-color: $dark;
   transform: translateX(-50%) translateY(-50%) scale(0.95);
+  box-shadow: inset 0px -120px 120px -80px rgba($dark, 0.4);
+}
+
+.swiper-card-held {
+  box-shadow: inset 0px -120px 120px -80px rgba($dark, 0.4),
+              0 5px 30px -8px rgba(0, 0, 0, 0.8);
+  transition: box-shadow 200ms ease-in-out;
+}
+
+@include media-breakpoint-down(md) {
+  .swiper-card {
+    width: $card-base-size-wide;
+    height: $card-base-size-wide * $card-ratio;
+    max-height: $card-base-size-tall;
+    max-width: $card-base-size-tall * $card-ratio;
+  }
+}
+
+// Scrollbar customisations, not supported in all browsers
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $body-bg;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $warning;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $white;
 }
