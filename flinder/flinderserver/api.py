@@ -21,9 +21,9 @@ from django.http import JsonResponse, HttpResponseNotAllowed
 @login_required
 def get_matches(request):
     # Check that this is an API call
-    #if request.accepts('text/html'):
+    # if request.accepts('text/html'):
     #    return HttpResponseNotAllowed(permitted_methods=["GET"])
-    
+
     """ TODO: Uncomment, once backend is complete
     result = Swipe.objects.filter(swiper_id=request.user.username)
     result_list = []
@@ -57,3 +57,17 @@ def get_cards(request):
 
     # Set safe to False because we want to return a list of results and not a single object
     return JsonResponse(result_list, safe=False)
+
+
+@login_required
+def register_swipe(request):
+    if request.method == "POST":
+        print(request.POST.keys())
+        swiper = request.user
+        swiped = request.POST["swiped"]
+        swipe_direction = request.POST["swipeDir"]
+
+        print(f"Registered swipe from: {swiper} of: {swiped} as: {swipe_direction}")
+        return JsonResponse({"success": True})
+    else:
+        return JsonResponse({"success": False})

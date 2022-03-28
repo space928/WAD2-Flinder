@@ -17,5 +17,6 @@ urlpatterns = [
     path('main', views.main, name="main"),
     path('profile/<slug:profile_slug>', views.profile, name="profile"),
     path('api/get_cards', api.get_cards, name="get_cards"),
-    path('api/get_matches', api.get_matches, name="get_matches")
+    path('api/get_matches', api.get_matches, name="get_matches"),
+    path('api/register_swipe', api.register_swipe, name="register_swipe")
 ]

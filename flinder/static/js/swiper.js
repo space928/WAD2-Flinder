@@ -132,7 +132,7 @@ class Swiper {
                 // Wait for the transition, then remove the card
                 setTimeout(() => {
                     if(this.onCardSwiped)
-                        this.onCardSwiped(this.topCard);
+                        this.onCardSwiped(this.topCard, e.direction === Hammer.DIRECTION_RIGHT);
 
                     this.board.removeChild(this.topCard);
 

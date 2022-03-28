@@ -21,7 +21,7 @@
                 Your Matches
             </h1>
             <div id="matches-container" class="container">
-            
+
             </div>
         </div>
         <div class="col-md">
@@ -36,26 +36,65 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script src="/static/js/swiper.js"></script>
     <script>
-        const apiURLCards = "{% url 'flinder:get_cards' %}"
+        // Script for swipeable cards, and related server communication
+        const apiURLCards = "{% url 'flinder:get_cards' %}";
+        const apiURLRegisterSwipe = "{% url 'flinder:register_swipe' %}";
 
+        // Converts a JS object to FormData
+        const createFormData = (data) => {
+            const formData = new FormData();
+            for (let key in data)
+                formData.append(key, data[key]);
+            return formData;
+        };
+
+        // Setup the swiper
         const swiperContainer = document.getElementById('swiper');
         const swiper = new Swiper(swiperContainer, 100, 0.25, 45, 0.05);
+        // Add styling for currently held card
         swiper.onHeld = (card) => {
             card.classList.add("swiper-card-held");
         };
         swiper.onRelease = (card) => {
             card.classList.remove("swiper-card-held");
         };
+        // Send POST request to server to register swiped cards
+        swiper.onCardSwiped = (card, direction) => {
+            fetch(apiURLRegisterSwipe, {
+                method: "POST",
+                headers: {"X-CSRFToken": "{{ csrf_token }}"},
+                body: createFormData({
+                    swiped: card.dataset.user,
+                    swipeDir: direction
+                })
+            }).then((response) => {
+                response.json().then((data) => {
+                    console.log(`Swipe message sent to server. Server responded with: ${data.success ? "Success" : "Fail"}`);
+                });
+            })
 
-        loadMoreCards = ()=>{
-            return fetch(apiURLCards).then((d)=>{
-                return d.json().then((data)=>{
+            // Check if we need to request more cards
+            if (swiper.cards.length < 5)
+                loadMoreCards().then(() => {
+                    swiper.updateCards();
+                });
+
+            // Check if we have any new matches
+            loadMoreMatches();
+        };
+
+        // Fetch more cards from the server
+        loadMoreCards = () => {
+            return fetch(apiURLCards).then((d) => {
+                return d.json().then((data) => {
                     createCards(data);
                 });
-        })};
+            })
+        };
 
-        createCards = (newCards)=>{
-            for(let card of newCards) {
+        // Create HTML from fetched card JSON
+        createCards = (newCards) => {
+            for (let card of newCards) {
                 const container = document.createElement("div");
                 const textContainer = document.createElement("div");
                 const title = document.createElement("h3");
@@ -73,60 +112,69 @@
                 title.innerHTML = card.name;
                 subtitle.innerHTML = card.subtitle;
                 container.style.backgroundImage = `url(${card.photo})`;
+                container.dataset.user = card.user;
 
-                swiperContainer.appendChild(container);
+                swiperContainer.prepend(container);
             }
         };
 
-        loadMoreCards().then(()=>{
+        // Load an initial set of cards and then register them in the swiper
+        loadMoreCards().then(() => {
             swiper.updateCards();
         });
     </script>
     <script>
+        // Script for displaying matches and related server communication
         const apiURLMatches = "{% url 'flinder:get_matches' %}";
-        let matches = [];
-        loadMoreMatches = ()=>{
-            return fetch(apiURLMatches).then((d)=>{
-                return d.json().then((data)=>{
-                    matches.push(...data);
+        let matches = {};
+        loadMoreMatches = () => {
+            return fetch(apiURLMatches).then((d) => {
+                return d.json().then((data) => {
+                    for (let match of data) {
+                        if (!(match.user in matches)) {
+                            matches[match.user] = match;
+                            appendMatchToDom(match);
+                        }
+                    }
                 });
-        })};
+            })
+        };
 
-        appendMatchesToDom = ()=>{
-            const matchesRoot = document.getElementById("matches-container");
-            for(let i = 0; i < matches.length; i++){
-                const container = document.createElement("div");
-                const textContainer = document.createElement("div");
-                const imageContainer = document.createElement("div");
-                const title = document.createElement("h3");
-                const subtitle = document.createElement("p");
-                const image = document.createElement("img");
-                const link = document.createElement("a");
+        const matchesRoot = document.getElementById("matches-container");
 
-                container.appendChild(imageContainer);
-                container.appendChild(textContainer);
-                imageContainer.appendChild(image);
-                textContainer.appendChild(title);
-                textContainer.appendChild(subtitle);
-                textContainer.appendChild(link);
+        // Creates HTML out of a match
+        appendMatchToDom = (match) => {
+            const container = document.createElement("div");
+            const textContainer = document.createElement("div");
+            const imageContainer = document.createElement("div");
+            const title = document.createElement("h3");
+            const subtitle = document.createElement("p");
+            const image = document.createElement("img");
+            const link = document.createElement("a");
 
-                title.innerHTML = matches[i].name;
-                subtitle.innerHTML = matches[i].subtitle;
-                image.src = matches[i].photo;
-                link.href = matches[i].url;
+            container.appendChild(imageContainer);
+            container.appendChild(textContainer);
+            imageContainer.appendChild(image);
+            textContainer.appendChild(title);
+            textContainer.appendChild(subtitle);
+            textContainer.appendChild(link);
 
-                container.className = "row align-items-center position-relative my-2";
-                textContainer.className = "col";
-                imageContainer.className = "image-thumbnail p-0 mx-3";
-                image.className = "rounded-circle";
-                title.className = "row";
-                subtitle.className = "row";
-                link.className = "stretched-link";
+            title.innerHTML = match.name;
+            subtitle.innerHTML = match.subtitle;
+            image.src = match.photo;
+            link.href = match.url;
 
-                matchesRoot.appendChild(container);
-            }
+            container.className = "row align-items-center position-relative my-2";
+            textContainer.className = "col";
+            imageContainer.className = "image-thumbnail p-0 mx-3";
+            image.className = "rounded-circle";
+            title.className = "row";
+            subtitle.className = "row";
+            link.className = "stretched-link";
+
+            matchesRoot.appendChild(container);
         }
 
-        loadMoreMatches().then(appendMatchesToDom);
+        loadMoreMatches();
     </script>
 {% endblock %}
