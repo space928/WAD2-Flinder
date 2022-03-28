@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseNotAllowed
 import flinderserver.matching
-from flinderserver.models import Pictures, Swipe
+from flinderserver.models import Pictures, Swipe, UserProfile
 from django.urls import reverse
 
 
@@ -21,14 +21,15 @@ from django.urls import reverse
 def get_matches(request):
     result_list = []
     for swipe in Swipe.objects.filter(swiper=request.user.id, swipeRight=True):
-        if (Swipe.objects.filter(swiper=swipe.swiped, swipeRight=True).any()):
+        if Swipe.objects.filter(swiper=swipe.swiped, swipeRight=True).exists():
+            profile = UserProfile.objects.get(username_id=swipe.swiped.id)
             result_list.append({
-            "user": swipe.swiped.username.id,
-            "photo": Pictures.objects.filter(poster=swipe.swiped.username.id)[0].picture.url,
-            "name": swipe.swiped.name,
-            "subtitle": f"Flat of {swipe.swiped.flatBedrooms} on {swipe.swiped.addressLine1}",
-            "url": reverse('flinder:profile', swipe.swiped.username.id)
-        })
+                "user": swipe.swiped.id,
+                "photo": Pictures.objects.filter(poster=swipe.swiped.id)[0].picture.url,
+                "name": profile.name,
+                "subtitle": f"Flat of {profile.flatBedrooms} on {profile.addressLine1}",
+                "url": reverse('flinder:profile', kwargs={"profile_slug": swipe.swiped.id})
+            })
 
     # Set safe to False because we want to return a list of results and not a single object
     return JsonResponse(result_list, safe=False)
@@ -60,7 +61,7 @@ def register_swipe(request):
         swipe_direction = request.POST["swipeDir"] == "true"
 
         print(f"Registered swipe from: {swiper} of: {swiped} as: {swipe_direction}")
-        swipe = Swipe.objects.get_or_create(swiper_id=swiper, swiped_id=swiped)
+        swipe = Swipe(swiper_id=swiper, swiped_id=swiped)
         swipe.swipeRight = swipe_direction
         swipe.save()
 

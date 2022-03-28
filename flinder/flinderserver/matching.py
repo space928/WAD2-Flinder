@@ -18,11 +18,12 @@ def get_matches(user_profile, n):
     users = UserProfile.objects.all()
     matched_users = []
 
-    for user in users:
-        if len(matched_users) < n:
+    for user in users.iterator():
+        if len(matched_users) >= n:
             break
         if get_compatability(user, UserProfile.objects.get(username=user_profile.id)) > 0:
             matched_users.append(user)
+            print(f"Matched {user}")
 
     return matched_users
     
@@ -47,6 +48,7 @@ def get_compatability(user1, user2):
         if interest in user2_interests:
             compatibility += compatibility_scores[interest]
         else:
-            compatibility -= compatibility_scores[interest]
+            if interest in compatibility_scores:
+                compatibility -= compatibility_scores[interest]
 
     return compatibility

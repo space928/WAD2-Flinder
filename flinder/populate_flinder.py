@@ -41,7 +41,7 @@ def add_random_swipe(users):
 
 
 def add_picture(user, picture, description):
-    new_picture = Pictures.objects.get_or_create(poster=user)[0]
+    new_picture = Pictures.objects.get_or_create(poster_id=user.id, description="")[0]
     new_picture.picture = picture
     new_picture.description = description
     new_picture.save()
