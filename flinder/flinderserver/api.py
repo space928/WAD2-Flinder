@@ -55,12 +55,15 @@ def get_cards(request):
 @login_required
 def register_swipe(request):
     if request.method == "POST":
-        swiper = request.user
+        swiper = request.user.id
         swiped = request.POST["swiped"]
-        swipe_direction = request.POST["swipeDir"]
+        swipe_direction = request.POST["swipeDir"] == "true"
 
         print(f"Registered swipe from: {swiper} of: {swiped} as: {swipe_direction}")
-        
+        swipe = Swipe.objects.get_or_create(swiper_id=swiper, swiped_id=swiped)
+        swipe.swipeRight = swipe_direction
+        swipe.save()
+
         return JsonResponse({"success": True})
     else:
         return JsonResponse({"success": False})

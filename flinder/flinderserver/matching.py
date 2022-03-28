@@ -17,15 +17,18 @@ compatibility_scores = {
 def get_matches(user_profile, n):
     users = UserProfile.objects.all()
     matched_users = []
-    while len(matched_users) < n:
-        temp = random.choice(users)
-        if get_compatability(temp, UserProfile.objects.get(username=user_profile.id)) > 0:
-            matched_users.append(temp)
+
+    for user in users:
+        if len(matched_users) < n:
+            break
+        if get_compatability(user, UserProfile.objects.get(username=user_profile.id)) > 0:
+            matched_users.append(user)
+
     return matched_users
     
 
 def get_compatability(user1, user2):
-    compatability = 0
+    compatibility = 0
     user2_interests = set(user2.interests)
 
     # Don't return matches that don't have compatible yearOfStudy/gender/age preferences
@@ -42,8 +45,8 @@ def get_compatability(user1, user2):
 
     for interest in user1.interests:
         if interest in user2_interests:
-            compatability += compatibility_scores[interest]
+            compatibility += compatibility_scores[interest]
         else:
-            compatability -= compatibility_scores[interest]
+            compatibility -= compatibility_scores[interest]
 
-    return compatability
+    return compatibility
