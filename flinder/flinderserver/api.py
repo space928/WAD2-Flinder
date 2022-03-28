@@ -1,10 +1,8 @@
-# Temp
-import json
-import random
-
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseNotAllowed
 import flinderserver.matching
+from flinderserver.models import Pictures, Swipe, UserProfile
+from django.urls import reverse
 
 
 # api/get_match?id=1
@@ -17,31 +15,21 @@ import flinderserver.matching
 #         "subtitle":"Flat of 3 on Dumbarton Road"
 #     },
 # ]
-from flinderserver.models import Pictures, Swipe
 
 
 @login_required
 def get_matches(request):
-    # Check that this is an API call
-    # if request.accepts('text/html'):
-    #    return HttpResponseNotAllowed(permitted_methods=["GET"])
-
-    """ TODO: Uncomment, once backend is complete
-    result = Swipe.objects.filter(swiper_id=request.user.username)
     result_list = []
-    for title in result:
-        current_user = UserProfile.objects.get(username_id=1)
-        current_user_picture = Pictures.objects.get(pictureID=title.swiped_id)[0]
-        print(current_user)
-        member = {"swiped_id": title.swiped_id, "swiper_id": title.swiper_id, "swipeRight": title.swipeRight,
-                  "username": current_user.username.email, "photo": current_user_picture.picture.url,
-                  "name": current_user.name,
-                  "description": current_user_picture.description}
-        result_list.append(member)"""
-
-    # TODO: Remove once backend work is complete
-    with open("./test/flinderCardDataTest.json", "r") as f:
-        result_list = random.choices(json.loads(f.read()), k=10)
+    for swipe in Swipe.objects.filter(swiper=request.user.id, swipeRight=True):
+        if Swipe.objects.filter(swiper=swipe.swiped, swipeRight=True).exists():
+            profile = UserProfile.objects.get(username_id=swipe.swiped.id)
+            result_list.append({
+                "user": swipe.swiped.id,
+                "photo": Pictures.objects.filter(poster=swipe.swiped.id)[0].picture.url,
+                "name": profile.name,
+                "subtitle": f"Flat of {profile.flatBedrooms} on {profile.addressLine1}",
+                "url": reverse('flinder:profile', kwargs={"profile_slug": swipe.swiped.id})
+            })
 
     # Set safe to False because we want to return a list of results and not a single object
     return JsonResponse(result_list, safe=False)
@@ -73,7 +61,7 @@ def register_swipe(request):
         swipe_direction = request.POST["swipeDir"] == "true"
 
         print(f"Registered swipe from: {swiper} of: {swiped} as: {swipe_direction}")
-        swipe = Swipe.objects.get_or_create(swiper_id=swiper, swiped_id=swiped)
+        swipe = Swipe(swiper_id=swiper, swiped_id=swiped)
         swipe.swipeRight = swipe_direction
         swipe.save()
 
