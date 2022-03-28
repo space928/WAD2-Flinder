@@ -17,7 +17,7 @@
 {% block body_block %}
     <div class="container row">
         <div class="col-md">
-            <div class="align-items-end d-flex my-2 rounded-3 swiper-card" style="background-image: {{ pictureUrl }}">
+            <div class="align-items-end d-flex mx-3 my-2 rounded-3 profile-card" style="background-image: url({{ pictureUrl }})">
                 <div class="col ms-4">
                     <h3 class="row">{{ profile.name }}</h3>
                     <p class="row">{{ profile.addressLine1 }}</p>
@@ -26,7 +26,14 @@
             </div>
         </div>
         <div class="col-md">
-
+            <h2 class="row">Details</h2>
+            <p class="row">Gender: <strong>{{ profile.gender }}</strong></p>
+            <p class="row">Year of birth: <strong>{{ profile.yearOfBirth }}</strong></p>
+            <p class="row">Year of study: <strong>{{ profile.yearOfStudy }}</strong></p>
+            <p class="row">University: <strong>{{ profile.university }}</strong></p>
+            <p class="row">Interests: <strong>{{ profile.interests }}</strong></p>
+            <p class="row">Contact details: <strong>{{ profile.contactDetails }}</strong></p>
+            <p class="row">Gender: <strong>{{ profile.gender }}</strong></p>
         </div>
     </div>
 {% endblock %}
