@@ -22,8 +22,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="bootstrap" level="application" />
     <orderEntry type="library" name="swiper" level="application" />
+    <orderEntry type="library" name="swiper" level="application" />
+    <orderEntry type="library" name="86eee436ad" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="86eee436ad" level="application" />
   </component>
   <component name="PackageRequirementsSettings">
     <option name="requirementsPath" value="C:\Users\Thoma\OneDrive\School\2nd Year\CS2021 - WAD2\Labs\WAD2-Flinder\flinder\requirements.txt" />
