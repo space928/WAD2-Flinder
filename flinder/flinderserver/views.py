@@ -176,13 +176,10 @@ def main(request):
 @login_required
 def profile(request, profile_slug):
     # Query the database for any data needed to build the page
-    # TODO: Once the model is complete, import it and uncomment this code
-    # try:
-    #    profile = Profile.objects.get(slug=profile_slug)
-    # except Profile.DoesNotExist:
-    #    profile = None
-    # TODO: Remove
-    db_profile = None
+    try:
+        db_profile = UserProfile.objects.get(uuid=profile_slug)
+    except UserProfile.DoesNotExist:
+        db_profile = None
 
     # If the profile doesn't exist, redirect the user to the main page
     if db_profile is None:

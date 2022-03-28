@@ -15,6 +15,30 @@ class Swiper {
         this.onRelease = null;
     }
 
+    swipeCurrent(direction) {
+        let posX = direction?(this.board.clientWidth):(-(this.board.clientWidth + this.topCard.clientWidth));
+        let rot = direction?(this.maxRotation):(-this.maxRotation);
+
+        // Set transition properties
+        this.topCard.style.transition = `transform ${this.transitionTime*2}ms ease-out`;
+        if(this.nextCard)
+            this.nextCard.style.transition = `transform ${this.transitionTime}ms linear`;
+
+        // Throw away the card
+        this.topCard.style.transform =
+            `translateX(${posX}px) translateY(${0}px) rotate(${rot}deg)`;
+
+        // Wait for the transition, then remove the card
+        setTimeout(() => {
+            if(this.onCardSwiped)
+                this.onCardSwiped(this.topCard, direction);
+
+            this.board.removeChild(this.topCard);
+
+            this.updateCards();
+        }, this.transitionTime*2);
+    }
+
     updateCards() {
         this.cards = this.board.children;
         if(this.cards.length > 0) {
