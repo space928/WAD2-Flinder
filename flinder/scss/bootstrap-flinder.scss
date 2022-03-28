@@ -200,3 +200,14 @@ $card-base-size-tall:90vh;
 .card-button {
   transform: translateY(-40%);
 }
+
+.profile-card {
+  overflow: hidden;
+  //background-image: linear-gradient(to bottom, rgba($dark, .0), rgba($dark, 0.3));
+  max-height: 70%;
+  min-height: 30rem;
+  background-position: center;
+  background-size: cover;
+  background-color: $dark;
+  box-shadow: inset 0px -120px 120px -80px rgba($dark, 0.4);
+}

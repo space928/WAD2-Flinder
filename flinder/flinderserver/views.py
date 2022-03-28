@@ -178,7 +178,7 @@ def main(request):
 def profile(request, profile_slug):
     # Query the database for any data needed to build the page
     try:
-        db_profile = UserProfile.objects.get(uuid=profile_slug)
+        db_profile = UserProfile.objects.get(username_id=profile_slug)
     except UserProfile.DoesNotExist:
         db_profile = None
 
@@ -186,9 +186,12 @@ def profile(request, profile_slug):
     if db_profile is None:
         return redirect('flinder:main')
 
+    picture = Pictures.objects.filter(poster_id=profile_slug)[0]
+
     # Context for the html template
     context_dict = {
         "profile": db_profile,
+        "pictureUrl": picture.picture.url
     }
 
     # Render the web page
