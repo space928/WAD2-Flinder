@@ -1,12 +1,12 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.urls import reverse
 
-from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm
-from flinderserver.models import UserProfile, Pictures, InterestsAndPriorities, Swipe
+from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm, UserProfileForm
+from flinderserver.models import UserProfile, Pictures, Swipe
 
 
 # Create your views here.
@@ -43,7 +43,6 @@ def login_view(request):
 
 
 def register(request):
-    registered = False
     if request.method == 'POST':
         user_form = UserForm(request.POST)
 
@@ -51,14 +50,31 @@ def register(request):
             user = user_form.save()
             user.set_password(user.password)
             user.save()
-            registered = True
             return redirect(reverse('flinder:register_account_type'))
         else:
             print(user_form.errors)
     else:
         user_form = UserForm()
 
-    return render(request,'flinder/register.html',context = {'user_form': user_form})
+    return render(request, 'flinder/register.html', context={'user_form': user_form})
+
+
+@login_required
+def edit_profiles(request):
+    registered = False
+    # This should get from profiles:  request.user
+    user_profile = UserProfile.objects.get(pk=1)
+    print(user_profile)
+    if request.method == 'POST':
+        user_form = UserProfileForm(request.POST)
+        if user_form.is_valid():
+            user = user_form.save()
+            return redirect(reverse('flinder:register_account_type'))
+        else:
+            print(user_form.errors)
+    else:
+        user_form = UserProfileForm(request.POST, instance=user_profile)
+    return render(request, 'flinder/edit_profile.html', context={'user_form': user_form})
 
 
 @login_required
@@ -72,7 +88,13 @@ def register_room_seeker(request):
     if request.method == 'POST':
         room_seeker_form = RoomSeekerForm(request.POST)
         if room_seeker_form.is_valid():
-            room_seeker = room_seeker_form.save()
+            # Save the form making sure to populate the flatSearcher and username fields
+            room_seeker = room_seeker_form.save(commit=False)
+            room_seeker.username = request.user
+            room_seeker.flatSearcher = True
+            room_seeker.save()
+
+            return redirect(reverse('flinder:upload_photos'))
         else:
             print(room_seeker_form.errors)
     else:
@@ -80,7 +102,7 @@ def register_room_seeker(request):
 
     # Context for the html template
     context_dict = {
-        'room_seeker_form':room_seeker_form
+        'room_seeker_form': room_seeker_form
     }
 
     # Render the web page
@@ -96,7 +118,13 @@ def register_room_provider(request):
     if request.method == 'POST':
         room_provider_form = RoomProviderForm(request.POST)
         if room_provider_form.is_valid():
-            room_provider = room_provider_form.save()
+            # Save the form making sure to populate the flatSearcher and username fields
+            room_provider = room_provider_form.save(commit=False)
+            room_provider.username = request.user
+            room_provider.flatSearcher = False
+            room_provider.save()
+
+            return redirect(reverse('flinder:upload_photos'))
         else:
             print(room_provider_form.errors)
     else:
@@ -104,7 +132,7 @@ def register_room_provider(request):
 
     # Context for the html template
     context_dict = {
-        'room_provider_form':room_provider_form
+        'room_provider_form': room_provider_form
     }
 
     # Render the web page
@@ -113,47 +141,34 @@ def register_room_provider(request):
     return response
 
 
-@login_required
+# @login_required
 def upload_photos(request):
-    # Query the database for any data needed to build the page
+    current_images = Pictures.objects.filter(poster=request.user)
+    context_dict = {'images': [img.picture.url for img in current_images]}
 
-    # Context for the html template
-    context_dict = {
+    if request.method == 'POST':
+        # Check each image is of an appropriate type
+        for image in request.FILES.values():
+            if image.content_type != "image/jpeg" and image.content_type != "image/png":
+                context_dict['msg'] = "Img type forbidden! Please upload an img"
+                return render(request, "flinder/upload_photos.html", context=context_dict)
 
-    }
+        # Save each image to the DB
+        for image in request.FILES.values():
+            print(f"Uploading {image.name}...")
+            img = Pictures(picture=image, description=image.name, poster=request.user)
+            img.save()
 
-    # Render the web page
-    response = render(request, "flinder/upload_photos.html", context=context_dict)
+        context_dict['msg'] = "Upload success!"
+        return render(request, "flinder/upload_photos.html", context=context_dict)
 
-    return response
-
-
-@login_required
-def edit_profile(request):
-    # Query the database for any data needed to build the page
-
-    # Context for the html template
-    context_dict = {
-
-    }
-
-    # Render the web page
-    response = render(request, "flinder/edit_profile.html", context=context_dict)
-
-    return response
+    return render(request, 'flinder/upload_photos.html', context=context_dict)
 
 
 @login_required
 def main(request):
-    # Query the database for any data needed to build the page
-
-    # Context for the html template
-    context_dict = {
-
-    }
-
     # Render the web page
-    response = render(request, "flinder/main.html", context=context_dict)
+    response = render(request, "flinder/main.html")
 
     return response
 

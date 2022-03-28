@@ -7,7 +7,7 @@ $variable-prefix:bs-;
 $primary: #416AB5;
 $secondary:#f8f9fa;
 $success:#41AD4F;
-$danger:#dc3545;
+$danger:#ff4658;
 $info:#0dcaf0;
 $warning:#C4DEB2;
 $light:#f8f9fa;
@@ -16,6 +16,7 @@ $dark:#0D5B5A;
 $enable-shadows:false;
 $enable-gradients:true;
 $border-width:1px;
+$border-radius-lg:1rem;
 //$border-radius:1.5rem;
 //$border-radius-sm:.2rem;
 
@@ -31,7 +32,6 @@ $btn-border-radius:2rem;
 $btn-border-width:2px;
 
 //Typeface
-@import url(https://use.fontawesome.com/releases/v5.0.10/css/all.css);
 @import url(https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;450;700&display=swap);
 $font-family-base:Work Sans;
 $headings-font-family:Work Sans;
@@ -56,14 +56,7 @@ $enable-rfs:false;
 // Import Bootstrap SCSS sources:
 @import "bootstrap/scss/bootstrap";
 
-/*.body::after {
-  content: "";
-  position: absolute;
-  background-image: url(/static/images/FlinderBGDeco.svg) bottom center;
-}*/
-
 @function calculateRem($size) {
-  //@return math.div($size, 16px) * 1rem;
   @return ($size / 16px) * 1rem;
 }
 
@@ -76,10 +69,12 @@ $enable-rfs:false;
   background-image: $gradient;
 }
 
-.btn-primary,.btn-check:checked+.btn-outline-primary {
+.btn-primary,.btn-danger,.btn-check:checked+.btn-outline-primary {
   border-width: 0;
   padding: $btn-padding-y+calculateRem($btn-border-width) $btn-padding-x+calculateRem($btn-border-width);
 }
+
+// ### Styling for custom elements
 
 //Add the curvy bottom to the navbar
 .navbar::after {
@@ -104,17 +99,100 @@ $enable-rfs:false;
   height: 0;
   width:80%;
   padding-bottom:80%;
+  background: url(/static/images/PlusIcon.svg) no-repeat center;
+  background-size: 4rem;
 }
 
 .image-preview {
   width: 15rem;
   height: 15rem;
   background-size: cover;
+  background-position: center;
 }
 
-/*.image-upload-box:after {
-  content: "";
-  display: block;
-  padding-bottom: 80%;
-}*/
+.image-thumbnail {
+  width: 8rem;
+  height: 8rem;
+  overflow: hidden;
+  padding: 0;
+}
 
+.image-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#matches-container {
+  overflow: hidden scroll;
+  height: 75vh;
+  scroll-behavior: smooth;
+}
+
+.swiper {
+  overflow: hidden;
+  position: relative;
+  height: 85vh;
+}
+
+$card-ratio:1.3;
+$card-base-size-wide:60vw;
+$card-base-size-tall:90vh;
+
+.swiper-card {
+  position: absolute;
+  overflow: hidden;
+  width: $card-base-size-wide/2;
+  height: $card-base-size-wide * $card-ratio/2;
+  max-height: $card-base-size-tall/2;
+  max-width: $card-base-size-tall * $card-ratio/2;
+  top: 50%;
+  left: 50%;
+  //background-image: linear-gradient(to bottom, rgba($dark, .0), rgba($dark, 0.3));
+  background-position: center;
+  background-size: cover;
+  background-color: $dark;
+  transform: translateX(-50%) translateY(-50%) scale(0.95);
+  box-shadow: inset 0px -120px 120px -80px rgba($dark, 0.4);
+}
+
+.swiper-card-held {
+  box-shadow: inset 0px -120px 120px -80px rgba($dark, 0.4),
+              0 5px 30px -8px rgba(0, 0, 0, 0.8);
+  transition: box-shadow 200ms ease-in-out;
+}
+
+@include media-breakpoint-down(md) {
+  .swiper-card {
+    width: $card-base-size-wide;
+    height: $card-base-size-wide * $card-ratio;
+    max-height: $card-base-size-tall;
+    max-width: $card-base-size-tall * $card-ratio;
+  }
+}
+
+// Scrollbar customisations, not supported in all browsers
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $body-bg;
+}
+
+.bg-dark::-webkit-scrollbar-track {
+  background: $dark;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba($warning,0.5);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba($warning,1);
+}
+
+.overflow-scroll-y {
+  overflow: hidden auto;
+}
