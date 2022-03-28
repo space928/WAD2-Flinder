@@ -196,3 +196,7 @@ $card-base-size-tall:90vh;
 .overflow-scroll-y {
   overflow: hidden auto;
 }
+
+.card-button {
+  transform: translateY(-40%);
+}
