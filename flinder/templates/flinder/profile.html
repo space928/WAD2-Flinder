@@ -1,0 +1,32 @@
+{% extends 'flinder/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Profile - {{ profile.name }}
+{% endblock %}
+
+{% block nav_block %}
+    <a class="btn-outline-secondary btn px-3 py-2 me-2 ms-auto" href="{% url "flinder:main" %}">
+        <i class="fa-solid fa-house"></i>
+    </a>
+{% endblock %}
+
+<!-- This is used to center the content vertically -->
+{% block main_class %} my-auto {% endblock %}
+
+{% block body_block %}
+    <div class="container row">
+        <div class="col-md">
+            <div class="align-items-end d-flex my-2 rounded-3 swiper-card" style="background-image: {{ pictureUrl }}">
+                <div class="col ms-4">
+                    <h3 class="row">{{ profile.name }}</h3>
+                    <p class="row">{{ profile.addressLine1 }}</p>
+                    <p class="row">{{ profile.addressLine2 }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md">
+
+        </div>
+    </div>
+{% endblock %}
