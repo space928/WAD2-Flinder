@@ -16,11 +16,10 @@
         <link rel="shortcut icon" href="{%  static 'images/favicon.ico' %}">
 
         <link rel="stylesheet" href="{% static 'css/bootstrap-flinder.css' %}">
-        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
     </head>
 
     <body>
-        <div class="d-flex flex-column min-vh-100 text-light {% block bg_class %} {% endblock %}">
+        <div class="d-flex flex-column min-vh-100 vh-100 overflow-scroll-y text-light {% block bg_class %} {% endblock %}">
             <header>
                 <nav id="flinder-nav-bar" class="navbar navbar-dark bg-dark box-shadow">
                     <a class="navbar-brand" href="{%  url 'flinder:index'  %}">
