@@ -1,4 +1,4 @@
-from flinderserver.models import UserProfile, Pictures, InterestsAndPriorities, Swipe
+from flinderserver.models import UserProfile
 #More comparisons to be done
 from flinderserver.models import UserProfile
 import random
@@ -9,7 +9,7 @@ def get_matches(userProfile, n):
     matchedUsers = list()
     while(len(matchedUsers) < n):
         temp = random.choice(users)
-        if get_compatability(temp, userProfile) > 0:
+        if get_compatability(temp, UserProfile.objects.get(username=userProfile.id)) > 0:
             matchedUsers.append(temp)
     return matchedUsers
     
