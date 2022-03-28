@@ -1,11 +1,10 @@
 # Temp
 import json
 import random
-import ssl
-import urllib.request
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseNotAllowed
+import flinderserver.matching
 
 
 # api/get_match?id=1
@@ -50,9 +49,8 @@ def get_matches(request):
 def get_cards(request):
     # Get the user asking for matches
     user = request.user
-    # TODO: Call the matching algorithm to get the data here
-    with open("./test/flinderCardDataTest.json", "r") as f:
-        result_list = random.choices(json.loads(f.read()), k=10)
+    #Call the matching algorithm to get the data here
+    result_list = flinderserver.matching.get_matches(user, 10)
 
     # Set safe to False because we want to return a list of results and not a single object
     return JsonResponse(result_list, safe=False)
