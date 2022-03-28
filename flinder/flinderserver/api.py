@@ -18,6 +18,8 @@ import flinderserver.matching
 #         "subtitle":"Flat of 3 on Dumbarton Road"
 #     },
 # ]
+from flinderserver.models import Pictures
+
 
 @login_required
 def get_matches(request):
@@ -52,8 +54,15 @@ def get_matches(request):
 def get_cards(request):
     # Get the user asking for matches
     user = request.user
-    #Call the matching algorithm to get the data here
-    result_list = flinderserver.matching.get_matches(user,10)
+    # Call the matching algorithm to get the data here
+    result_list = []
+    for profile in flinderserver.matching.get_matches(user, 10):
+        result_list.append({
+            "user": profile.username.id,
+            "photo": Pictures.objects.filter(poster=profile.username.id)[0].picture.url,
+            "name": profile.name,
+            "subtitle": f"Flat of {profile.flatBedrooms} on {profile.addressLine1}"
+        })
     # Set safe to False because we want to return a list of results and not a single object
     return JsonResponse(result_list, safe=False)
 
@@ -61,12 +70,12 @@ def get_cards(request):
 @login_required
 def register_swipe(request):
     if request.method == "POST":
-        print(request.POST.keys())
         swiper = request.user
         swiped = request.POST["swiped"]
         swipe_direction = request.POST["swipeDir"]
 
         print(f"Registered swipe from: {swiper} of: {swiped} as: {swipe_direction}")
+        
         return JsonResponse({"success": True})
     else:
         return JsonResponse({"success": False})
