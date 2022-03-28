@@ -1,5 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from multiselectfield import MultiSelectField
+import uuid
 from flinderserver.models import UserProfile, Pictures, Swipe
 
 class TestModel(TestCase):
@@ -8,13 +10,15 @@ class TestModel(TestCase):
 		user = User.objects.create_user(username='Thomas123',email='jlennon@beatles.com',password='glass onion')
 		user2 = User.objects.create_user(username='Gianmarco123',email='jlennon21@beatles.com',password='wood onion')
 
-		UserProfile.objects.create(username=user,name="Thomas", yearOfBirth=1999, flatSearcher=True, addressLine1="Radnor Street 7", addressLine2="2/2", 
+		UserProfile.objects.create(username=user,name="Thomas", gender='M',yearOfBirth=1999, yearOfStudy='2', interests=('partying', 'pets','sports'),flatSearcher=True, addressLine1="Radnor Street 7", addressLine2="2/2", 
 			postCode="G37UA", flatBedrooms=4, freeBedrooms=2, university="University of Glasgow", mixedGender=True, mixedYearOfStudy=True, mixedAge=True, 
 			contactDetails="00436503640361")
 
-		Pictures.objects.create(poster=user,picture="flinder/duck.jpg",description="duck")
+		Pictures.objects.create(poster=user,picture="flinder/test/duck.jpg",description="duck")
 
 		Swipe.objects.create(swiper=user, swiped=user2, swipeRight=True)
+
+		
 
 
 
@@ -42,9 +46,10 @@ class TestModel(TestCase):
 		picture = Pictures.objects.get(description="duck")
 		user = User.objects.get(username="Thomas123")
 
-		self.assertEqual(picture.poster, user, f"Tests on the UserProfile model failed. Check you have all required attribute and try again.")
-		self.assertEqual(picture.picture, "flinder/duck.jpg", f"Tests on the UserProfile model failed. Check you have all required attribute and try again.")
-		self.assertEqual(picture.description, "duck", f"Tests on the UserProfile model failed. Check you have all required attribute and try again.")
+		self.assertEqual(picture.poster, user, f"Tests on the Pictures model failed. Check you have all required attribute and try again.")
+		#need to upload duck.jpg to flinder directory for it to work
+		self.assertEqual(picture.picture, "flinder/test/duck.jpg", f"Tests on the Pictures model failed. Check you have all required attribute and try again.")
+		self.assertEqual(picture.description, "duck", f"Tests on the Pictures model failed. Check you have all required attribute and try again.")
 
 
 	def test_should_create_swipe(self):
@@ -56,5 +61,6 @@ class TestModel(TestCase):
 		self.assertEqual(swipe.swiper, user,f"Tests on the Swipe model failed. Check you have all required attribute and try again.")
 		self.assertEqual(swipe.swiped, user2, f"Tests on the Swipe model failed. Check you have all required attribute and try again.")
 		self.assertTrue(swipe.swipeRight,f"Tests on the Swipe model failed. Check you have all required attribute and try again.")
+
 
 
