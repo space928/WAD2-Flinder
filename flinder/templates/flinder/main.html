@@ -25,8 +25,16 @@
             </div>
         </div>
         <div class="col-md">
-            <div class="swiper d-flex align-content-center justify-content-center" id="swiper">
+            <div class="swiper d-flex align-content-center justify-content-center row" id="swiper">
 
+            </div>
+            <div class="row align-content-center justify-content-center">
+                <a class="btn btn-danger px-3 py-2 text-light col-auto card-button" onclick="swiper.swipeCurrent(false)">
+                    <i class="fa-solid fa-xmark"></i>
+                </a>
+                <a class="btn btn-primary px-3 py-2 col-auto card-button" onclick="swiper.swipeCurrent(true)">
+                    <i class="fa-solid fa-heart"></i>
+                </a>
             </div>
         </div>
     </div>

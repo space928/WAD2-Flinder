@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.forms.models import model_to_dict
 
 from flinderserver.forms import RoomSeekerForm, RoomProviderForm, UserForm, UserProfileForm
 from flinderserver.models import UserProfile, Pictures, Swipe
@@ -73,7 +74,7 @@ def edit_profiles(request):
         else:
             print(user_form.errors)
     else:
-        user_form = UserProfileForm(request.POST, instance=user_profile)
+        user_form = UserProfileForm(request.POST, instance=user_profile, initial=model_to_dict(user_profile))
     return render(request, 'flinder/edit_profile.html', context={'user_form': user_form})
 
 
@@ -176,13 +177,10 @@ def main(request):
 @login_required
 def profile(request, profile_slug):
     # Query the database for any data needed to build the page
-    # TODO: Once the model is complete, import it and uncomment this code
-    # try:
-    #    profile = Profile.objects.get(slug=profile_slug)
-    # except Profile.DoesNotExist:
-    #    profile = None
-    # TODO: Remove
-    db_profile = None
+    try:
+        db_profile = UserProfile.objects.get(uuid=profile_slug)
+    except UserProfile.DoesNotExist:
+        db_profile = None
 
     # If the profile doesn't exist, redirect the user to the main page
     if db_profile is None:

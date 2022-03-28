@@ -1,7 +1,6 @@
 # Temp
 import json
-import ssl
-import urllib.request
+import random
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseNotAllowed
@@ -41,13 +40,11 @@ def get_matches(request):
         result_list.append(member)"""
 
     # TODO: Remove once backend work is complete
-    #gcontext = ssl.SSLContext()  # Dodgy SSL context with no verification
-    #r = urllib.request.urlopen("https://api.mockaroo.com/api/7e1549e0?count=10&key=6bc6a940", context=gcontext)
-    #result_list = json.loads(r.read().decode(r.info().get_param('charset') or 'utf-8'))
+    with open("./test/flinderCardDataTest.json", "r") as f:
+        result_list = random.choices(json.loads(f.read()), k=10)
 
     # Set safe to False because we want to return a list of results and not a single object
-    #return JsonResponse(result_list, safe=False)
-    return JsonResponse([], safe=False)
+    return JsonResponse(result_list, safe=False)
 
 
 @login_required
@@ -63,6 +60,7 @@ def get_cards(request):
             "name": profile.name,
             "subtitle": f"Flat of {profile.flatBedrooms} on {profile.addressLine1}"
         })
+
     # Set safe to False because we want to return a list of results and not a single object
     return JsonResponse(result_list, safe=False)
 
